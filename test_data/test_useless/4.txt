@@ -1,0 +1,6 @@
+function w $baz(l %p) {
+@start
+      %x =w loadw %p
+      %w =w mul %x, %x
+      ret %p
+}

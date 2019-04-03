@@ -1,0 +1,19 @@
+--- Output: size 187 ---
+@start:
+@block1:
+@block2:
+@end:
+%y 6 = @start 5 @block1 13 @block2 13 
+%x 7 = @start 4 @block1 4 @block2 14 
+%t 8 = @start 3 @block1 12 @block2 12 
+%p 9 = @start 2 @block1 11 @block2 11 
+
+--- Correct: size 187 ---
+@start:
+@block1:
+@block2:
+@end:
+%y 6 = @start 5 @block1 13 @block2 13 
+%x 7 = @start 4 @block1 4 @block2 14 
+%t 8 = @start 3 @block1 12 @block2 12 
+%p 9 = @start 2 @block1 11 @block2 11

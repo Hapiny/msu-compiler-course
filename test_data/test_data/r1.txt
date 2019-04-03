@@ -1,0 +1,12 @@
+@start
+	def = %x
+	use =
+
+@loop
+	def = %x %cond
+	use = %x
+
+@end
+	def = %t
+	use = %x
+

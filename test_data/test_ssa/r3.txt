@@ -1,0 +1,11 @@
+--- Output: size 52 ---
+@start:
+@block1:
+@block2:
+%t 3 = @start 1 @block1 2
+
+--- Correct: size 53 ---
+@start:
+@block1:
+@block2:
+%t 5 = @start 3 @block1 6 

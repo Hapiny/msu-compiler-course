@@ -1,0 +1,9 @@
+@start:
+@loop:
+%y 6 = @start 5 @block2 11 @block1 6 
+%x 7 = @start 4 @block2 7 @block1 12 
+@block1:
+@block2:
+@end:
+%y 8 = @block2 11 @block1 6 
+%x 9 = @block2 7 @block1 12 

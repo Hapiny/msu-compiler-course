@@ -1,0 +1,4 @@
+function w $unused_param(w %p, w %q) {
+@start
+      ret %p
+}

@@ -1,0 +1,8 @@
+--- Correct: size 90 ---
+@start:
+@block1:
+@block2:
+@end:
+%z 7 = @block2 6 @block1 11 
+%y 8 = @block2 10 @block1 5 
+

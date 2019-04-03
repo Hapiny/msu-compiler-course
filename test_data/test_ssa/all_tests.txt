@@ -1,0 +1,3735 @@
+====== Test #1 =======
+--- Input: size 171 ---
+export function w $main(l %fmt) {
+@start
+  %p =l alloc4 4
+  %t =w call $scanf(l %fmt, l %p)
+  %x =w loadw %p
+@loop
+  %x =w sub %x, 1
+  jnz %x, @loop, @end
+@end
+  ret %x
+}
+
+--- Output: size 46 ---
+@start:
+@loop:
+%x 5 = @start 4 @loop 6 
+@end:
+
+--- Correct: size 46 ---
+@start:
+@loop:
+%x 5 = @start 4 @loop 6 
+@end:
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=0, stime=4, ptime=4, rtime=5, maxvsz=0, maxrss=4308992, nvcsw=1, nivcsw=1 }
+checker: { utime=1732, stime=344, ptime=2076, rtime=2104, maxvsz=11415552, maxrss=90583040, nvcsw=376, nivcsw=230 }
+
+====== Test #2 =======
+--- Input: size 281 ---
+export function w $main(l %fmt) {
+@start
+  %p =l alloc4 4
+  %t =w call $scanf(l %fmt, l %p)
+  %x =w loadw %p
+  jnz %x, @block1, @block3
+@block1
+  %x =w sub %x, 3
+  jnz %x, @block2, @end
+@block2
+  %x =w sub %x, 2
+@block3
+  %x =w add %x, 7
+  jnz %x, @block1, @block2
+@end
+  ret %x
+}
+
+--- Output: size 124 ---
+@start:
+@block1:
+%x 9 = @start 4 @block3 6 
+@block2:
+%x 7 = @block3 6 @block1 10 
+@block3:
+%x 5 = @start 4 @block2 8 
+@end:
+
+--- Correct: size 124 ---
+@start:
+@block1:
+%x 9 = @start 4 @block3 6 
+@block2:
+%x 7 = @block3 6 @block1 10 
+@block3:
+%x 5 = @start 4 @block2 8 
+@end:
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=4, stime=0, ptime=4, rtime=5, maxvsz=22216704, maxrss=4378624, nvcsw=1, nivcsw=1 }
+checker: { utime=2108, stime=376, ptime=2484, rtime=2504, maxvsz=11415552, maxrss=90722304, nvcsw=441, nivcsw=249 }
+
+====== Test #3 =======
+--- Input: size 178 ---
+export function w $main(l %fmt) {
+@start
+  %p =l alloc4 4
+  %t =w call $scanf(l %fmt, l %p)
+  %x =w loadw %p
+  jnz %x, @block1, @block2
+@block1
+  %t =w copy 0
+@block2
+  ret %x
+}
+
+--- Output: size 53 ---
+@start:
+@block1:
+@block2:
+%t 5 = @start 3 @block1 6 
+
+--- Correct: size 53 ---
+@start:
+@block1:
+@block2:
+%t 5 = @start 3 @block1 6 
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=4, stime=0, ptime=4, rtime=6, maxvsz=0, maxrss=4329472, nvcsw=1, nivcsw=1 }
+checker: { utime=2092, stime=368, ptime=2460, rtime=2482, maxvsz=11415552, maxrss=90603520, nvcsw=457, nivcsw=313 }
+
+====== Test #4 =======
+--- Input: size 309 ---
+export function w $main(l %fmt) {
+@start
+  %p =l alloc4 4
+  %t =w call $scanf(l %fmt, l %p)
+  %x =w loadw %p
+  %y =w copy 0
+  jnz %x, @block1, @end
+@block1
+  %p =l alloc4 4
+  %t =w call $scanf(l %fmt, l %p)
+  %y =w loadw %p
+  jnz %y, @block2, @end
+@block2
+  %x =w sub %x, 1
+@end
+  %y =w add %x, %y
+  ret %y
+}
+
+--- Output: size 187 ---
+@start:
+@block1:
+@block2:
+@end:
+%y 6 = @start 5 @block1 13 @block2 13 
+%x 7 = @start 4 @block1 4 @block2 14 
+%t 8 = @start 3 @block1 12 @block2 12 
+%p 9 = @start 2 @block1 11 @block2 11 
+
+--- Correct: size 187 ---
+@start:
+@block1:
+@block2:
+@end:
+%y 6 = @start 5 @block1 13 @block2 13 
+%x 7 = @start 4 @block1 4 @block2 14 
+%t 8 = @start 3 @block1 12 @block2 12 
+%p 9 = @start 2 @block1 11 @block2 11 
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=4, stime=0, ptime=4, rtime=5, maxvsz=22167552, maxrss=4308992, nvcsw=1, nivcsw=3 }
+checker: { utime=2072, stime=452, ptime=2524, rtime=2544, maxvsz=11415552, maxrss=90673152, nvcsw=409, nivcsw=179 }
+
+====== Test #5 =======
+--- Input: size 260 ---
+export function w $main(l %fmt) {
+@start
+  %p =l alloc4 4
+  %t =w call $scanf(l %fmt, l %p)
+  %x =w loadw %p
+  %y =w copy 0
+  %z =w copy 1
+  jnz %x, @block2, @block1
+@block1
+  %z =w copy %y
+  jmp @end
+@block2
+  %y =w copy %z
+@end
+  %x =w add %y, %z
+  ret %x
+}
+
+--- Output: size 90 ---
+@start:
+@block1:
+@block2:
+@end:
+%z 7 = @block2 6 @block1 11 
+%y 8 = @block2 10 @block1 5 
+
+--- Correct: size 90 ---
+@start:
+@block1:
+@block2:
+@end:
+%z 7 = @block2 6 @block1 11 
+%y 8 = @block2 10 @block1 5 
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=4, stime=0, ptime=4, rtime=6, maxvsz=35061760, maxrss=4419584, nvcsw=1, nivcsw=1 }
+checker: { utime=1736, stime=332, ptime=2068, rtime=2104, maxvsz=11415552, maxrss=90652672, nvcsw=364, nivcsw=166 }
+
+====== Test #6 =======
+--- Input: size 319 ---
+export function w $main(l %fmt) {
+@start
+  %p =l alloc4 4
+  %t =w call $scanf(l %fmt, l %p)
+  %x =w loadw %p
+  %y =w copy 0
+  %z =w copy 1
+  jnz %x, @l, @end
+@l
+  %x =w sub %x, 1
+  jnz %x, @block2, @block1
+@block1
+  %z =w copy %x
+  jmp @end
+@block2
+  %y =w copy %x
+@end
+  %x =w add %x, %y
+  %x =w add %x, %z
+  ret %x
+}
+
+--- Output: size 144 ---
+@start:
+@l:
+@block1:
+@block2:
+@end:
+%x 0 = @start 1 @block1 2 @block2 2
+%y 0 = @start 1 @block1 1 @block2 2
+%z 0 = @start 1 @block1 2 @block2 1
+
+--- Correct: size 150 ---
+@start:
+@l:
+@block1:
+@block2:
+@end:
+  %x 0 = @start 1 @block1 2 @block2 2
+  %y 0 = @start 1 @block1 1 @block2 2
+  %z 0 = @start 1 @block1 2 @block2 1
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=0, stime=0, ptime=0, rtime=5, maxvsz=22167552, maxrss=4419584, nvcsw=1, nivcsw=2 }
+checker: { utime=2188, stime=412, ptime=2600, rtime=2634, maxvsz=11415552, maxrss=90701824, nvcsw=533, nivcsw=420 }
+
+====== Test #7 =======
+--- Input: size 290 ---
+export function w $main(l %fmt) {
+@start
+  %p =l alloc4 4
+  %t =w call $scanf(l %fmt, l %p)
+  %x =w loadw %p
+  %y =w copy 100
+@loop
+  jnz %x, @block1, @block2
+@block1
+  %x =w sub %x, 1
+  jnz %y, @loop, @end
+@block2
+  %y =w sub %y, 1
+  jnz %y, @loop, @end
+@end
+  %x =w add %x, %y
+  ret %x
+}
+
+--- Output: size 172 ---
+@start:
+@loop:
+%y 6 = @start 5 @block2 11 @block1 6 
+%x 7 = @start 4 @block2 7 @block1 12 
+@block1:
+@block2:
+@end:
+%y 8 = @block2 11 @block1 6 
+%x 9 = @block2 7 @block1 12
+
+--- Correct: size 173 ---
+@start:
+@loop:
+%y 6 = @start 5 @block2 11 @block1 6 
+%x 7 = @start 4 @block2 7 @block1 12 
+@block1:
+@block2:
+@end:
+%y 8 = @block2 11 @block1 6 
+%x 9 = @block2 7 @block1 12 
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=4, stime=0, ptime=4, rtime=7, maxvsz=35418112, maxrss=4472832, nvcsw=1, nivcsw=2 }
+checker: { utime=2204, stime=424, ptime=2628, rtime=2647, maxvsz=11415552, maxrss=90632192, nvcsw=429, nivcsw=129 }
+
+====== Test #8 =======
+--- Input: size 254 ---
+export function w $main(l %fmt) {
+@start
+  %p =l alloc4 4
+  %t =w call $scanf(l %fmt, l %p)
+  %x =w loadw %p
+  jnz %x, @block1, @block2
+@block1
+  %x =w sub %x, 1
+  jnz %x, @block3, @end
+@block2
+  %x =w sub %x, 5
+@block3
+  %x =w sub %x, 1
+@end
+  ret %x
+}
+
+--- Output: size 96 ---
+@start:
+@block1:
+@block2:
+@block3:
+%x 6 = @block2 8 @block1 9 
+@end:
+%x 5 = @block3 7 @block1 9
+
+--- Correct: size 97 ---
+@start:
+@block1:
+@block2:
+@block3:
+%x 6 = @block2 8 @block1 9 
+@end:
+%x 5 = @block3 7 @block1 9 
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=0, stime=0, ptime=0, rtime=5, maxvsz=0, maxrss=4362240, nvcsw=1, nivcsw=1 }
+checker: { utime=1812, stime=396, ptime=2208, rtime=2224, maxvsz=11939840, maxrss=90710016, nvcsw=350, nivcsw=136 }
+
+====== Test #9 =======
+--- Input: size 309 ---
+export function w $main(l %fmt) {
+@start
+  %p =l alloc4 4
+  %t =w call $scanf(l %fmt, l %p)
+  %x =w loadw %p
+  %y =w copy 0
+  jnz %x, @block1, @end
+@block1
+  %p =l alloc4 4
+  %t =w call $scanf(l %fmt, l %p)
+  %y =w loadw %p
+  jnz %y, @block2, @end
+@block2
+  %y =w sub %y, 1
+@end
+  %y =w add %x, %y
+  ret %y
+}
+
+--- Output: size 148 ---
+@start:
+@block1:
+@block2:
+@end:
+%y 6 = @start 5 @block1 12 @block2 13 
+%t 7 = @start 3 @block1 11 @block2 11 
+%p 8 = @start 2 @block1 10 @block2 10
+
+--- Correct: size 149 ---
+@start:
+@block1:
+@block2:
+@end:
+%y 6 = @start 5 @block1 12 @block2 13 
+%t 7 = @start 3 @block1 11 @block2 11 
+%p 8 = @start 2 @block1 10 @block2 10 
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=4, stime=0, ptime=4, rtime=7, maxvsz=0, maxrss=4378624, nvcsw=1, nivcsw=2 }
+checker: { utime=1736, stime=352, ptime=2088, rtime=2106, maxvsz=11415552, maxrss=90583040, nvcsw=388, nivcsw=407 }
+
+====== Test #10 =======
+--- Input: size 253 ---
+export function w $main(l %fmt) {
+@start
+  %p =l alloc4 4
+  %t =w call $scanf(l %fmt, l %p)
+  %x =w loadw %p
+  jnz %x, @block1, @block2
+@block1
+  %x =w sub %x, 1
+  jnz %x, @block3, @end
+@block2
+  %x =w sub %x, 5
+@block3
+  %x =w sub %x, 1
+@end
+  ret 0
+}
+
+--- Output: size 96 ---
+@start:
+@block1:
+@block2:
+@block3:
+%x 6 = @block2 8 @block1 9 
+@end:
+%x 5 = @block3 7 @block1 9
+
+--- Correct: size 97 ---
+@start:
+@block1:
+@block2:
+@block3:
+%x 6 = @block2 8 @block1 9 
+@end:
+%x 5 = @block3 7 @block1 9 
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=0, stime=0, ptime=0, rtime=5, maxvsz=22179840, maxrss=4567040, nvcsw=1, nivcsw=1 }
+checker: { utime=1820, stime=292, ptime=2112, rtime=2129, maxvsz=11415552, maxrss=90624000, nvcsw=339, nivcsw=70 }
+
+====== Test #11 =======
+--- Input: size 186 ---
+function w $main(l %fmt) {
+@start
+    %x =w copy 5
+@loop
+    %x =w mul %x, %x
+    %cond =w csgew %x, 200
+    jnz %cond, @end, @loop
+@end
+    %t =w call $printf(l %fmt, w %x)
+    ret 0
+}
+
+--- Output: size 75 ---
+@start:
+@loop:
+%cond 3 = @start -1 @loop 6 
+%x 4 = @start 2 @loop 5 
+@end:
+
+--- Correct: size 75 ---
+@start:
+@loop:
+%cond 3 = @start -1 @loop 6 
+%x 4 = @start 2 @loop 5 
+@end:
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=4, stime=0, ptime=4, rtime=7, maxvsz=22167552, maxrss=4407296, nvcsw=1, nivcsw=2 }
+checker: { utime=1968, stime=312, ptime=2280, rtime=2316, maxvsz=11415552, maxrss=90718208, nvcsw=445, nivcsw=308 }
+
+====== Test #12 =======
+--- Input: size 259 ---
+export function $sieve(w %n, l %prime) {
+@fill0.cond
+  %uuu =l alloc4 4
+  %cond1 =w csgtw %n, 0
+  jnz %cond1, @fill0.body, @fill2.header
+
+@fill0.body
+  storeb 0, %prime
+
+@fill0.exit
+  %n =w cast 2
+  %uuu =l alloc8 2
+  %uuu =l alloc16 1
+
+@fill2.header
+  ret
+}
+
+--- Output: size 128 ---
+@fill0.cond:
+@fill0.body:
+@fill0.exit:
+@fill2.header:
+%uuu 5 = @fill0.cond 3 @fill0.exit 9 
+%n 6 = @fill0.cond 1 @fill0.exit 7 
+
+--- Correct: size 128 ---
+@fill0.cond:
+@fill0.body:
+@fill0.exit:
+@fill2.header:
+%uuu 5 = @fill0.cond 3 @fill0.exit 9 
+%n 6 = @fill0.cond 1 @fill0.exit 7 
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=4, stime=0, ptime=4, rtime=6, maxvsz=0, maxrss=4407296, nvcsw=1, nivcsw=1 }
+checker: { utime=1884, stime=368, ptime=2252, rtime=2271, maxvsz=11415552, maxrss=90591232, nvcsw=378, nivcsw=62 }
+
+====== Test #13 =======
+--- Input: size 1963 ---
+export function w $plot(w %t0, w %t1, w %t2) {
+@l0
+	%x =l alloc4 4
+	storew %t0, %x
+	%y =l alloc4 4
+	storew %t1, %y
+	%rnd =l alloc4 4
+	storew %t2, %rnd
+	%n =l alloc4 4
+	%fx =l alloc4 4
+	%fy =l alloc4 4
+	%zx =l alloc4 4
+	%zy =l alloc4 4
+	%nx =l alloc4 4
+	%ny =l alloc4 4
+	%W =l alloc4 4
+	%H =l alloc4 4
+	%col =l alloc8 8
+	%t7 =w loadw %x
+	%t9 =w loadw %W
+	%t8 =w div %t9, 2
+	%t6 =w sub %t7, %t8
+	%t5 =w mul %t6, 4000
+	%t12 =w loadw %W
+	%t4 =w div %t5, %t12
+	storew %t4, %fx
+	%t17 =w loadw %y
+	%t19 =w loadw %H
+	%t18 =w div %t19, 2
+	%t16 =w sub %t17, %t18
+	%t15 =w mul %t16, 4000
+	%t22 =w loadw %H
+	%t14 =w div %t15, %t22
+	storew %t14, %fy
+	%t24 =w loadw %fx
+	storew %t24, %zx
+	%t26 =w loadw %fy
+	storew %t26, %zy
+	storew 0, %n
+@l1
+	%t30 =w loadw %n
+	%t29 =w csltw %t30, 200
+	jnz %t29, @l2, @l3
+@l2
+	%t36 =w loadw %zx
+	%t37 =w loadw %zx
+	%t35 =w mul %t36, %t37
+	%t39 =w loadw %zy
+	%t40 =w loadw %zy
+	%t38 =w mul %t39, %t40
+	%t34 =w add %t35, %t38
+	%t32 =w csltw 4000000, %t34
+	jnz %t32, @l4, @l5
+@l4
+	jmp @l3
+@l5
+	%t46 =w loadw %zx
+	%t47 =w loadw %zx
+	%t45 =w mul %t46, %t47
+	%t44 =w div %t45, 1000
+	%t51 =w loadw %zy
+	%t52 =w loadw %zy
+	%t50 =w mul %t51, %t52
+	%t49 =w div %t50, 1000
+	%t43 =w sub %t44, %t49
+	%t54 =w loadw %fx
+	%t42 =w add %t43, %t54
+	storew %t42, %nx
+	%t59 =w loadw %zx
+	%t60 =w loadw %zy
+	%t58 =w mul %t59, %t60
+	%t57 =w div %t58, 500
+	%t62 =w loadw %fy
+	%t56 =w add %t57, %t62
+	storew %t56, %ny
+	%t64 =w loadw %nx
+	storew %t64, %zx
+	%t66 =w loadw %ny
+	storew %t66, %zy
+	%t68 =w loadw %n
+	%t67 =w add %t68, 1
+	storew %t67, %n
+	jmp @l1
+@l3
+	%t72 =l loadl %col
+	%t73 =w loadw %n
+	%t74 =l extsw %t73
+	%t75 =l mul 4, %t74
+	%t71 =l add %t72, %t75
+	%t70 =w loadw %t71
+	storew %t70, %n
+	%t77 =w loadw %rnd
+	%t79 =w loadw %n
+	%t80 =w loadw %n
+	%t76 =w call $SDL_SetRenderDrawColor(w %t77, w 100, w %t79, w %t80, w 255, ...)
+	%t83 =w loadw %rnd
+	%t84 =w loadw %x
+	%t85 =w loadw %y
+	%t82 =w call $SDL_RenderDrawPoint(w %t83, w %t84, w %t85, ...)
+	ret 0
+}
+
+
+--- Output: size 1022 ---
+@l0:
+@l1:
+%t67 33 = @l0 -1 @l5 116 
+%t68 34 = @l0 -1 @l5 115 
+%t66 35 = @l0 -1 @l5 114 
+%t64 36 = @l0 -1 @l5 113 
+%t56 37 = @l0 -1 @l5 112 
+%t62 38 = @l0 -1 @l5 111 
+%t57 39 = @l0 -1 @l5 110 
+%t58 40 = @l0 -1 @l5 109 
+%t60 41 = @l0 -1 @l5 108 
+%t59 42 = @l0 -1 @l5 107 
+%t42 43 = @l0 -1 @l5 106 
+%t54 44 = @l0 -1 @l5 105 
+%t43 45 = @l0 -1 @l5 104 
+%t49 46 = @l0 -1 @l5 103 
+%t50 47 = @l0 -1 @l5 102 
+%t52 48 = @l0 -1 @l5 101 
+%t51 49 = @l0 -1 @l5 100 
+%t44 50 = @l0 -1 @l5 99 
+%t45 51 = @l0 -1 @l5 98 
+%t47 52 = @l0 -1 @l5 97 
+%t46 53 = @l0 -1 @l5 96 
+%t32 54 = @l0 -1 @l5 95 
+%t34 55 = @l0 -1 @l5 94 
+%t38 56 = @l0 -1 @l5 93 
+%t40 57 = @l0 -1 @l5 92 
+%t39 58 = @l0 -1 @l5 91 
+%t35 59 = @l0 -1 @l5 90 
+%t37 60 = @l0 -1 @l5 89 
+%t36 61 = @l0 -1 @l5 88 
+%t29 62 = @l0 -1 @l5 65 
+%t30 63 = @l0 -1 @l5 64 
+@l2:
+@l4:
+@l5:
+@l3:
+%t32 66 = @l1 54 @l4 95 
+%t34 67 = @l1 55 @l4 94 
+%t38 68 = @l1 56 @l4 93 
+%t40 69 = @l1 57 @l4 92 
+%t39 70 = @l1 58 @l4 91 
+%t35 71 = @l1 59 @l4 90 
+%t37 72 = @l1 60 @l4 89 
+%t36 73 = @l1 61 @l4 88 
+
+--- Correct: size 1022 ---
+@l0:
+@l1:
+%t67 33 = @l0 -1 @l5 116 
+%t68 34 = @l0 -1 @l5 115 
+%t66 35 = @l0 -1 @l5 114 
+%t64 36 = @l0 -1 @l5 113 
+%t56 37 = @l0 -1 @l5 112 
+%t62 38 = @l0 -1 @l5 111 
+%t57 39 = @l0 -1 @l5 110 
+%t58 40 = @l0 -1 @l5 109 
+%t60 41 = @l0 -1 @l5 108 
+%t59 42 = @l0 -1 @l5 107 
+%t42 43 = @l0 -1 @l5 106 
+%t54 44 = @l0 -1 @l5 105 
+%t43 45 = @l0 -1 @l5 104 
+%t49 46 = @l0 -1 @l5 103 
+%t50 47 = @l0 -1 @l5 102 
+%t52 48 = @l0 -1 @l5 101 
+%t51 49 = @l0 -1 @l5 100 
+%t44 50 = @l0 -1 @l5 99 
+%t45 51 = @l0 -1 @l5 98 
+%t47 52 = @l0 -1 @l5 97 
+%t46 53 = @l0 -1 @l5 96 
+%t32 54 = @l0 -1 @l5 95 
+%t34 55 = @l0 -1 @l5 94 
+%t38 56 = @l0 -1 @l5 93 
+%t40 57 = @l0 -1 @l5 92 
+%t39 58 = @l0 -1 @l5 91 
+%t35 59 = @l0 -1 @l5 90 
+%t37 60 = @l0 -1 @l5 89 
+%t36 61 = @l0 -1 @l5 88 
+%t29 62 = @l0 -1 @l5 65 
+%t30 63 = @l0 -1 @l5 64 
+@l2:
+@l4:
+@l5:
+@l3:
+%t32 66 = @l1 54 @l4 95 
+%t34 67 = @l1 55 @l4 94 
+%t38 68 = @l1 56 @l4 93 
+%t40 69 = @l1 57 @l4 92 
+%t39 70 = @l1 58 @l4 91 
+%t35 71 = @l1 59 @l4 90 
+%t37 72 = @l1 60 @l4 89 
+%t36 73 = @l1 61 @l4 88 
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=4, stime=0, ptime=4, rtime=7, maxvsz=0, maxrss=4440064, nvcsw=1, nivcsw=2 }
+checker: { utime=1880, stime=384, ptime=2264, rtime=2295, maxvsz=11415552, maxrss=90701824, nvcsw=444, nivcsw=368 }
+
+====== Test #14 =======
+--- Input: size 2108 ---
+export function w $main(l %glo1) {
+@l0
+	%c =l alloc4 4
+	%n =l alloc4 4
+	%x =l alloc4 4
+	%y =l alloc4 4
+	%e =l alloc8 8
+	%ie =l alloc8 8
+	%col =l alloc8 8
+	%W =l alloc4 4
+	%H =l alloc4 4
+	%rnd =l alloc4 4
+	%win =l alloc4 4
+	storew 800, %W
+	storew 800, %H
+	%t4 =w call $SDL_Init(w 32, ...)
+	%t11 =w loadw %W
+	%t12 =w loadw %H
+	%t7 =w call $SDL_CreateWindow(l %glo1, w 0, w 0, w %t11, w %t12, w 0, ...)
+	storew %t7, %win
+	%t16 =w loadw %win
+	%t17 =w sub 0, 1
+	%t15 =w call $SDL_CreateRenderer(w %t16, w %t17, w 0, ...)
+	storew %t15, %rnd
+	%t22 =l loadl %e
+	storel %t22, %ie
+	storew 20, %c
+	storew 0, %n
+@l1
+	%t28 =w loadw %n
+	%t27 =w csltw %t28, 200
+	jnz %t27, @l2, @l3
+@l2
+	%t31 =w loadw %c
+	%t33 =l loadl %col
+	%t34 =w loadw %n
+	%t35 =l extsw %t34
+	%t36 =l mul 4, %t35
+	%t32 =l add %t33, %t36
+	storew %t31, %t32
+	%t39 =w loadw %c
+	%t43 =w loadw %c
+	%t41 =w sub 255, %t43
+	%t40 =w div %t41, 8
+	%t38 =w add %t39, %t40
+	storew %t38, %c
+	%t46 =w loadw %n
+	%t45 =w add %t46, 1
+	storew %t45, %n
+	jmp @l1
+@l3
+	%t50 =l loadl %col
+	%t51 =w loadw %n
+	%t52 =l extsw %t51
+	%t53 =l mul 4, %t52
+	%t49 =l add %t50, %t53
+	storew 30, %t49
+	%t55 =w loadw %rnd
+	%t54 =w call $SDL_RenderClear(w %t55, ...)
+	storew 0, %x
+@l4
+	%t59 =w loadw %x
+	%t60 =w loadw %W
+	%t58 =w csltw %t59, %t60
+	jnz %t58, @l5, @l6
+@l5
+	storew 0, %y
+@l7
+	%t64 =w loadw %y
+	%t65 =w loadw %H
+	%t63 =w csltw %t64, %t65
+	jnz %t63, @l8, @l9
+@l8
+	%t67 =w loadw %x
+	%t68 =w loadw %y
+	%t66 =w call $plot(w %t67, w %t68, ...)
+	%t70 =w loadw %y
+	%t69 =w add %t70, 1
+	storew %t69, %y
+	jmp @l7
+@l9
+	%t72 =w loadw %x
+	%t71 =w add %t72, 1
+	storew %t71, %x
+	jmp @l4
+@l6
+	%t74 =w loadw %rnd
+	%t73 =w call $SDL_RenderPresent(w %t74, ...)
+@l10
+	jnz 1, @l11, @l12
+@l11
+	%t77 =l loadl %e
+	%t76 =w call $SDL_PollEvent(l %t77, ...)
+	jnz %t76, @l13, @l14
+@l13
+	%t81 =l loadl %ie
+	%t80 =l add %t81, 0
+	%t79 =w loadw %t80
+	%t78 =w ceqw %t79, 769
+	jnz %t78, @l16, @l17
+@l16
+	jmp @l12
+@l17
+@l14
+	jmp @l10
+@l12
+	%t85 =w loadw %rnd
+	%t84 =w call $SDL_DestroyRenderer(w %t85, ...)
+	%t87 =w loadw %win
+	%t86 =w call $SDL_DestroyWindow(w %t87, ...)
+	%t88 =w call $SDL_Quit(...)
+	ret 0
+}
+
+--- Output: size 1439 ---
+@l0:
+@l1:
+%t45 21 = @l0 -1 @l2 120 
+%t46 22 = @l0 -1 @l2 119 
+%t38 23 = @l0 -1 @l2 118 
+%t40 24 = @l0 -1 @l2 117 
+%t41 25 = @l0 -1 @l2 116 
+%t43 26 = @l0 -1 @l2 115 
+%t39 27 = @l0 -1 @l2 114 
+%t32 28 = @l0 -1 @l2 113 
+%t36 29 = @l0 -1 @l2 112 
+%t35 30 = @l0 -1 @l2 111 
+%t34 31 = @l0 -1 @l2 110 
+%t33 32 = @l0 -1 @l2 109 
+%t31 33 = @l0 -1 @l2 108 
+%t27 34 = @l0 -1 @l2 37 
+%t28 35 = @l0 -1 @l2 36 
+@l2:
+@l3:
+@l4:
+%t71 45 = @l3 -1 @l9 102 
+%t72 46 = @l3 -1 @l9 101 
+%t69 47 = @l3 -1 @l9 90 
+%t70 48 = @l3 -1 @l9 91 
+%t66 49 = @l3 -1 @l9 92 
+%t68 50 = @l3 -1 @l9 93 
+%t67 51 = @l3 -1 @l9 94 
+%t63 52 = @l3 -1 @l9 100 
+%t65 53 = @l3 -1 @l9 99 
+%t64 54 = @l3 -1 @l9 98 
+%t58 55 = @l3 -1 @l9 60 
+%t60 56 = @l3 -1 @l9 59 
+%t59 57 = @l3 -1 @l9 58 
+@l5:
+@l7:
+%t69 90 = @l5 47 @l8 107 
+%t70 91 = @l5 48 @l8 106 
+%t66 92 = @l5 49 @l8 105 
+%t68 93 = @l5 50 @l8 104 
+%t67 94 = @l5 51 @l8 103 
+%t63 95 = @l5 52 @l8 100 
+%t65 96 = @l5 53 @l8 99 
+%t64 97 = @l5 54 @l8 98 
+@l8:
+@l9:
+@l6:
+@l10:
+%t78 63 = @l6 -1 @l14 82 
+%t79 64 = @l6 -1 @l14 83 
+%t80 65 = @l6 -1 @l14 84 
+%t81 66 = @l6 -1 @l14 85 
+%t76 67 = @l6 -1 @l14 81 
+%t77 68 = @l6 -1 @l14 80 
+@l11:
+@l13:
+@l16:
+@l17:
+@l14:
+%t78 82 = @l11 63 @l17 89 
+%t79 83 = @l11 64 @l17 88 
+%t80 84 = @l11 65 @l17 87 
+%t81 85 = @l11 66 @l17 86 
+@l12:
+%t78 69 = @l10 63 @l16 89 
+%t79 70 = @l10 64 @l16 88 
+%t80 71 = @l10 65 @l16 87 
+%t81 72 = @l10 66 @l16 86 
+%t76 73 = @l10 67 @l16 81 
+%t77 74 = @l10 68 @l16 80
+
+--- Correct: size 1440 ---
+@l0:
+@l1:
+%t45 21 = @l0 -1 @l2 120 
+%t46 22 = @l0 -1 @l2 119 
+%t38 23 = @l0 -1 @l2 118 
+%t40 24 = @l0 -1 @l2 117 
+%t41 25 = @l0 -1 @l2 116 
+%t43 26 = @l0 -1 @l2 115 
+%t39 27 = @l0 -1 @l2 114 
+%t32 28 = @l0 -1 @l2 113 
+%t36 29 = @l0 -1 @l2 112 
+%t35 30 = @l0 -1 @l2 111 
+%t34 31 = @l0 -1 @l2 110 
+%t33 32 = @l0 -1 @l2 109 
+%t31 33 = @l0 -1 @l2 108 
+%t27 34 = @l0 -1 @l2 37 
+%t28 35 = @l0 -1 @l2 36 
+@l2:
+@l3:
+@l4:
+%t71 45 = @l3 -1 @l9 102 
+%t72 46 = @l3 -1 @l9 101 
+%t69 47 = @l3 -1 @l9 90 
+%t70 48 = @l3 -1 @l9 91 
+%t66 49 = @l3 -1 @l9 92 
+%t68 50 = @l3 -1 @l9 93 
+%t67 51 = @l3 -1 @l9 94 
+%t63 52 = @l3 -1 @l9 100 
+%t65 53 = @l3 -1 @l9 99 
+%t64 54 = @l3 -1 @l9 98 
+%t58 55 = @l3 -1 @l9 60 
+%t60 56 = @l3 -1 @l9 59 
+%t59 57 = @l3 -1 @l9 58 
+@l5:
+@l7:
+%t69 90 = @l5 47 @l8 107 
+%t70 91 = @l5 48 @l8 106 
+%t66 92 = @l5 49 @l8 105 
+%t68 93 = @l5 50 @l8 104 
+%t67 94 = @l5 51 @l8 103 
+%t63 95 = @l5 52 @l8 100 
+%t65 96 = @l5 53 @l8 99 
+%t64 97 = @l5 54 @l8 98 
+@l8:
+@l9:
+@l6:
+@l10:
+%t78 63 = @l6 -1 @l14 82 
+%t79 64 = @l6 -1 @l14 83 
+%t80 65 = @l6 -1 @l14 84 
+%t81 66 = @l6 -1 @l14 85 
+%t76 67 = @l6 -1 @l14 81 
+%t77 68 = @l6 -1 @l14 80 
+@l11:
+@l13:
+@l16:
+@l17:
+@l14:
+%t78 82 = @l11 63 @l17 89 
+%t79 83 = @l11 64 @l17 88 
+%t80 84 = @l11 65 @l17 87 
+%t81 85 = @l11 66 @l17 86 
+@l12:
+%t78 69 = @l10 63 @l16 89 
+%t79 70 = @l10 64 @l16 88 
+%t80 71 = @l10 65 @l16 87 
+%t81 72 = @l10 66 @l16 86 
+%t76 73 = @l10 67 @l16 81 
+%t77 74 = @l10 68 @l16 80 
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=4, stime=0, ptime=4, rtime=7, maxvsz=0, maxrss=4395008, nvcsw=1, nivcsw=1 }
+checker: { utime=1672, stime=396, ptime=2068, rtime=2075, maxvsz=11415552, maxrss=90677248, nvcsw=338, nivcsw=107 }
+
+====== Test #15 =======
+--- Input: size 1027 ---
+export function w $main(l %glo1, l %glo2, l %glo3) {
+@l0
+	%n =l alloc4 4
+	%t =l alloc4 4
+	%c =l alloc4 4
+	%p =l alloc4 4
+	storew 0, %c
+	storew 2, %n
+@l1
+	%t5 =w loadw %n
+	%t4 =w csltw %t5, 5000
+	jnz %t4, @l2, @l3
+@l2
+	storew 2, %t
+	storew 1, %p
+@l4
+	%t13 =w loadw %t
+	%t14 =w loadw %t
+	%t12 =w mul %t13, %t14
+	%t15 =w loadw %n
+	%t11 =w cslew %t12, %t15
+	jnz %t11, @l5, @l6
+@l5
+	%t18 =w loadw %n
+	%t19 =w loadw %t
+	%t17 =w rem %t18, %t19
+	%t16 =w ceqw %t17, 0
+	jnz %t16, @l7, @l8
+@l7
+	storew 0, %p
+@l8
+	%t24 =w loadw %t
+	%t23 =w add %t24, 1
+	storew %t23, %t
+	jmp @l4
+@l6
+	%t25 =w loadw %p
+	jnz %t25, @l10, @l11
+@l10
+	%t26 =w loadw %c
+	jnz %t26, @l16, @l14
+@l16
+	%t29 =w loadw %c
+	%t28 =w rem %t29, 10
+	%t27 =w ceqw %t28, 0
+	jnz %t27, @l13, @l14
+@l13
+	%t32 =w call $printf(l %glo1, ...)
+@l14
+	%t36 =w loadw %n
+	%t34 =w call $printf(l %glo2, w %t36, ...)
+	%t38 =w loadw %c
+	%t37 =w add %t38, 1
+	storew %t37, %c
+@l11
+	%t40 =w loadw %n
+	%t39 =w add %t40, 1
+	storew %t39, %n
+	jmp @l1
+@l3
+	%t41 =w call $printf(l %glo3, ...)
+	ret 0
+}
+
+--- Output: size 1370 ---
+@l0:
+@l1:
+%t39 8 = @l0 -1 @l11 63 
+%t40 9 = @l0 -1 @l11 62 
+%t37 10 = @l0 -1 @l11 53 
+%t38 11 = @l0 -1 @l11 54 
+%t34 12 = @l0 -1 @l11 55 
+%t36 13 = @l0 -1 @l11 56 
+%t32 14 = @l0 -1 @l11 57 
+%t27 15 = @l0 -1 @l11 58 
+%t28 16 = @l0 -1 @l11 59 
+%t29 17 = @l0 -1 @l11 60 
+%t26 18 = @l0 -1 @l11 61 
+%t25 19 = @l0 -1 @l11 52 
+%t23 20 = @l0 -1 @l11 36 
+%t24 21 = @l0 -1 @l11 37 
+%t16 22 = @l0 -1 @l11 38 
+%t17 23 = @l0 -1 @l11 39 
+%t19 24 = @l0 -1 @l11 40 
+%t18 25 = @l0 -1 @l11 41 
+%t11 26 = @l0 -1 @l11 51 
+%t15 27 = @l0 -1 @l11 50 
+%t12 28 = @l0 -1 @l11 49 
+%t14 29 = @l0 -1 @l11 48 
+%t13 30 = @l0 -1 @l11 47 
+%t4 31 = @l0 -1 @l11 34 
+%t5 32 = @l0 -1 @l11 33 
+@l2:
+@l4:
+%t23 36 = @l2 20 @l8 82 
+%t24 37 = @l2 21 @l8 81 
+%t16 38 = @l2 22 @l8 80 
+%t17 39 = @l2 23 @l8 79 
+%t19 40 = @l2 24 @l8 78 
+%t18 41 = @l2 25 @l8 77 
+%t11 42 = @l2 26 @l8 51 
+%t15 43 = @l2 27 @l8 50 
+%t12 44 = @l2 28 @l8 49 
+%t14 45 = @l2 29 @l8 48 
+%t13 46 = @l2 30 @l8 47 
+@l5:
+@l7:
+@l8:
+@l6:
+@l10:
+@l16:
+@l13:
+@l14:
+%t32 65 = @l10 14 @l16 14 @l13 76 
+%t27 66 = @l10 15 @l16 75 @l13 75 
+%t28 67 = @l10 16 @l16 74 @l13 74 
+%t29 68 = @l10 17 @l16 73 @l13 73 
+@l11:
+%t37 53 = @l6 10 @l14 72 
+%t38 54 = @l6 11 @l14 71 
+%t34 55 = @l6 12 @l14 70 
+%t36 56 = @l6 13 @l14 69 
+%t32 57 = @l6 14 @l14 65 
+%t27 58 = @l6 15 @l14 66 
+%t28 59 = @l6 16 @l14 67 
+%t29 60 = @l6 17 @l14 68 
+%t26 61 = @l6 18 @l14 64 
+@l3:
+
+--- Correct: size 1370 ---
+@l0:
+@l1:
+%t39 8 = @l0 -1 @l11 63 
+%t40 9 = @l0 -1 @l11 62 
+%t37 10 = @l0 -1 @l11 53 
+%t38 11 = @l0 -1 @l11 54 
+%t34 12 = @l0 -1 @l11 55 
+%t36 13 = @l0 -1 @l11 56 
+%t32 14 = @l0 -1 @l11 57 
+%t27 15 = @l0 -1 @l11 58 
+%t28 16 = @l0 -1 @l11 59 
+%t29 17 = @l0 -1 @l11 60 
+%t26 18 = @l0 -1 @l11 61 
+%t25 19 = @l0 -1 @l11 52 
+%t23 20 = @l0 -1 @l11 36 
+%t24 21 = @l0 -1 @l11 37 
+%t16 22 = @l0 -1 @l11 38 
+%t17 23 = @l0 -1 @l11 39 
+%t19 24 = @l0 -1 @l11 40 
+%t18 25 = @l0 -1 @l11 41 
+%t11 26 = @l0 -1 @l11 51 
+%t15 27 = @l0 -1 @l11 50 
+%t12 28 = @l0 -1 @l11 49 
+%t14 29 = @l0 -1 @l11 48 
+%t13 30 = @l0 -1 @l11 47 
+%t4 31 = @l0 -1 @l11 34 
+%t5 32 = @l0 -1 @l11 33 
+@l2:
+@l4:
+%t23 36 = @l2 20 @l8 82 
+%t24 37 = @l2 21 @l8 81 
+%t16 38 = @l2 22 @l8 80 
+%t17 39 = @l2 23 @l8 79 
+%t19 40 = @l2 24 @l8 78 
+%t18 41 = @l2 25 @l8 77 
+%t11 42 = @l2 26 @l8 51 
+%t15 43 = @l2 27 @l8 50 
+%t12 44 = @l2 28 @l8 49 
+%t14 45 = @l2 29 @l8 48 
+%t13 46 = @l2 30 @l8 47 
+@l5:
+@l7:
+@l8:
+@l6:
+@l10:
+@l16:
+@l13:
+@l14:
+%t32 65 = @l10 14 @l16 14 @l13 76 
+%t27 66 = @l10 15 @l16 75 @l13 75 
+%t28 67 = @l10 16 @l16 74 @l13 74 
+%t29 68 = @l10 17 @l16 73 @l13 73 
+@l11:
+%t37 53 = @l6 10 @l14 72 
+%t38 54 = @l6 11 @l14 71 
+%t34 55 = @l6 12 @l14 70 
+%t36 56 = @l6 13 @l14 69 
+%t32 57 = @l6 14 @l14 65 
+%t27 58 = @l6 15 @l14 66 
+%t28 59 = @l6 16 @l14 67 
+%t29 60 = @l6 17 @l14 68 
+%t26 61 = @l6 18 @l14 64 
+@l3:
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=0, stime=4, ptime=4, rtime=6, maxvsz=22167552, maxrss=4571136, nvcsw=1, nivcsw=3 }
+checker: { utime=1652, stime=332, ptime=1984, rtime=1997, maxvsz=11415552, maxrss=90759168, nvcsw=314, nivcsw=70 }
+
+====== Test #16 =======
+--- Input: size 933 ---
+export function w $print(w %t0, l %t1, l %glo1, l %glo2, l %glo3, l %glo4) {
+@l0
+	%Q =l alloc4 4
+	storew %t0, %Q
+	%t =l alloc8 8
+	storel %t1, %t
+	%x =l alloc4 4
+	%y =l alloc4 4
+	storew 0, %y
+@l1
+	%t5 =w loadw %y
+	%t6 =w loadw %Q
+	%t4 =w csltw %t5, %t6
+	jnz %t4, @l2, @l3
+@l2
+	storew 0, %x
+@l4
+	%t10 =w loadw %x
+	%t11 =w loadw %Q
+	%t9 =w csltw %t10, %t11
+	jnz %t9, @l5, @l6
+@l5
+	%t16 =l loadl %t
+	%t17 =w loadw %x
+	%t18 =l extsw %t17
+	%t19 =l mul 8, %t18
+	%t15 =l add %t16, %t19
+	%t14 =l loadl %t15
+	%t20 =w loadw %y
+	%t21 =l extsw %t20
+	%t22 =l mul 4, %t21
+	%t13 =l add %t14, %t22
+	%t12 =w loadw %t13
+	jnz %t12, @l7, @l8
+@l7
+	%t23 =w call $printf(l %glo1, ...)
+	jmp @l9
+@l8
+	%t25 =w call $printf(l %glo2, ...)
+@l9
+	%t28 =w loadw %x
+	%t27 =w add %t28, 1
+	storew %t27, %x
+	jmp @l4
+@l6
+	%t29 =w call $printf(l %glo3, ...)
+	%t32 =w loadw %y
+	%t31 =w add %t32, 1
+	storew %t31, %y
+	jmp @l1
+@l3
+	%t33 =w call $printf(l %glo4, ...)
+	ret 0
+}
+
+--- Output: size 1145 ---
+@l0:
+@l1:
+%t31 11 = @l0 -1 @l6 62 
+%t32 12 = @l0 -1 @l6 61 
+%t29 13 = @l0 -1 @l6 60 
+%t27 14 = @l0 -1 @l6 39 
+%t28 15 = @l0 -1 @l6 40 
+%t25 16 = @l0 -1 @l6 41 
+%t23 17 = @l0 -1 @l6 42 
+%t12 18 = @l0 -1 @l6 43 
+%t13 19 = @l0 -1 @l6 44 
+%t22 20 = @l0 -1 @l6 45 
+%t21 21 = @l0 -1 @l6 46 
+%t20 22 = @l0 -1 @l6 47 
+%t14 23 = @l0 -1 @l6 48 
+%t15 24 = @l0 -1 @l6 49 
+%t19 25 = @l0 -1 @l6 50 
+%t18 26 = @l0 -1 @l6 51 
+%t17 27 = @l0 -1 @l6 52 
+%t16 28 = @l0 -1 @l6 53 
+%t9 29 = @l0 -1 @l6 59 
+%t11 30 = @l0 -1 @l6 58 
+%t10 31 = @l0 -1 @l6 57 
+%t4 32 = @l0 -1 @l6 37 
+%t6 33 = @l0 -1 @l6 36 
+%t5 34 = @l0 -1 @l6 35 
+@l2:
+@l4:
+%t27 39 = @l2 14 @l9 77 
+%t28 40 = @l2 15 @l9 76 
+%t25 41 = @l2 16 @l9 74 
+%t23 42 = @l2 17 @l9 75 
+%t12 43 = @l2 18 @l9 73 
+%t13 44 = @l2 19 @l9 72 
+%t22 45 = @l2 20 @l9 71 
+%t21 46 = @l2 21 @l9 70 
+%t20 47 = @l2 22 @l9 69 
+%t14 48 = @l2 23 @l9 68 
+%t15 49 = @l2 24 @l9 67 
+%t19 50 = @l2 25 @l9 66 
+%t18 51 = @l2 26 @l9 65 
+%t17 52 = @l2 27 @l9 64 
+%t16 53 = @l2 28 @l9 63 
+%t9 54 = @l2 29 @l9 59 
+%t11 55 = @l2 30 @l9 58 
+%t10 56 = @l2 31 @l9 57 
+@l5:
+@l7:
+@l8:
+@l9:
+%t25 74 = @l8 78 @l7 41 
+%t23 75 = @l8 42 @l7 79 
+@l6:
+@l3:
+
+--- Correct: size 1145 ---
+@l0:
+@l1:
+%t31 11 = @l0 -1 @l6 62 
+%t32 12 = @l0 -1 @l6 61 
+%t29 13 = @l0 -1 @l6 60 
+%t27 14 = @l0 -1 @l6 39 
+%t28 15 = @l0 -1 @l6 40 
+%t25 16 = @l0 -1 @l6 41 
+%t23 17 = @l0 -1 @l6 42 
+%t12 18 = @l0 -1 @l6 43 
+%t13 19 = @l0 -1 @l6 44 
+%t22 20 = @l0 -1 @l6 45 
+%t21 21 = @l0 -1 @l6 46 
+%t20 22 = @l0 -1 @l6 47 
+%t14 23 = @l0 -1 @l6 48 
+%t15 24 = @l0 -1 @l6 49 
+%t19 25 = @l0 -1 @l6 50 
+%t18 26 = @l0 -1 @l6 51 
+%t17 27 = @l0 -1 @l6 52 
+%t16 28 = @l0 -1 @l6 53 
+%t9 29 = @l0 -1 @l6 59 
+%t11 30 = @l0 -1 @l6 58 
+%t10 31 = @l0 -1 @l6 57 
+%t4 32 = @l0 -1 @l6 37 
+%t6 33 = @l0 -1 @l6 36 
+%t5 34 = @l0 -1 @l6 35 
+@l2:
+@l4:
+%t27 39 = @l2 14 @l9 77 
+%t28 40 = @l2 15 @l9 76 
+%t25 41 = @l2 16 @l9 74 
+%t23 42 = @l2 17 @l9 75 
+%t12 43 = @l2 18 @l9 73 
+%t13 44 = @l2 19 @l9 72 
+%t22 45 = @l2 20 @l9 71 
+%t21 46 = @l2 21 @l9 70 
+%t20 47 = @l2 22 @l9 69 
+%t14 48 = @l2 23 @l9 68 
+%t15 49 = @l2 24 @l9 67 
+%t19 50 = @l2 25 @l9 66 
+%t18 51 = @l2 26 @l9 65 
+%t17 52 = @l2 27 @l9 64 
+%t16 53 = @l2 28 @l9 63 
+%t9 54 = @l2 29 @l9 59 
+%t11 55 = @l2 30 @l9 58 
+%t10 56 = @l2 31 @l9 57 
+@l5:
+@l7:
+@l8:
+@l9:
+%t25 74 = @l8 78 @l7 41 
+%t23 75 = @l8 42 @l7 79 
+@l6:
+@l3:
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=0, stime=0, ptime=0, rtime=5, maxvsz=35549184, maxrss=4407296, nvcsw=1, nivcsw=1 }
+checker: { utime=2048, stime=356, ptime=2404, rtime=2423, maxvsz=11415552, maxrss=90689536, nvcsw=512, nivcsw=432 }
+
+====== Test #17 =======
+--- Input: size 3533 ---
+export function w $chk(w %t0, w %t1, l %t2, w %t3) {
+@l0
+	%x =l alloc4 4
+	storew %t0, %x
+	%y =l alloc4 4
+	storew %t1, %y
+	%t =l alloc8 8
+	storel %t2, %t
+	%Q =l alloc4 4
+	storew %t3, %Q
+	%i =l alloc4 4
+	%r =l alloc4 4
+	storew 0, %i
+	storew 0, %r
+@l1
+	%t8 =w loadw %i
+	%t9 =w loadw %Q
+	%t7 =w csltw %t8, %t9
+	jnz %t7, @l2, @l3
+@l2
+	%t12 =w loadw %r
+	%t17 =l loadl %t
+	%t18 =w loadw %x
+	%t19 =l extsw %t18
+	%t20 =l mul 8, %t19
+	%t16 =l add %t17, %t20
+	%t15 =l loadl %t16
+	%t21 =w loadw %i
+	%t22 =l extsw %t21
+	%t23 =l mul 4, %t22
+	%t14 =l add %t15, %t23
+	%t13 =w loadw %t14
+	%t11 =w add %t12, %t13
+	storew %t11, %r
+	%t26 =w loadw %r
+	%t31 =l loadl %t
+	%t32 =w loadw %i
+	%t33 =l extsw %t32
+	%t34 =l mul 8, %t33
+	%t30 =l add %t31, %t34
+	%t29 =l loadl %t30
+	%t35 =w loadw %y
+	%t36 =l extsw %t35
+	%t37 =l mul 4, %t36
+	%t28 =l add %t29, %t37
+	%t27 =w loadw %t28
+	%t25 =w add %t26, %t27
+	storew %t25, %r
+	%t41 =w loadw %x
+	%t42 =w loadw %i
+	%t40 =w add %t41, %t42
+	%t43 =w loadw %Q
+	%t39 =w csltw %t40, %t43
+	%t46 =w loadw %y
+	%t47 =w loadw %i
+	%t45 =w add %t46, %t47
+	%t48 =w loadw %Q
+	%t44 =w csltw %t45, %t48
+	%t38 =w and %t39, %t44
+	jnz %t38, @l4, @l5
+@l4
+	%t51 =w loadw %r
+	%t56 =l loadl %t
+	%t58 =w loadw %x
+	%t59 =w loadw %i
+	%t57 =w add %t58, %t59
+	%t60 =l extsw %t57
+	%t61 =l mul 8, %t60
+	%t55 =l add %t56, %t61
+	%t54 =l loadl %t55
+	%t63 =w loadw %y
+	%t64 =w loadw %i
+	%t62 =w add %t63, %t64
+	%t65 =l extsw %t62
+	%t66 =l mul 4, %t65
+	%t53 =l add %t54, %t66
+	%t52 =w loadw %t53
+	%t50 =w add %t51, %t52
+	storew %t50, %r
+@l5
+	%t70 =w loadw %x
+	%t71 =w loadw %i
+	%t69 =w add %t70, %t71
+	%t72 =w loadw %Q
+	%t68 =w csltw %t69, %t72
+	%t76 =w loadw %y
+	%t77 =w loadw %i
+	%t75 =w sub %t76, %t77
+	%t73 =w cslew 0, %t75
+	%t67 =w and %t68, %t73
+	jnz %t67, @l7, @l8
+@l7
+	%t80 =w loadw %r
+	%t85 =l loadl %t
+	%t87 =w loadw %x
+	%t88 =w loadw %i
+	%t86 =w add %t87, %t88
+	%t89 =l extsw %t86
+	%t90 =l mul 8, %t89
+	%t84 =l add %t85, %t90
+	%t83 =l loadl %t84
+	%t92 =w loadw %y
+	%t93 =w loadw %i
+	%t91 =w sub %t92, %t93
+	%t94 =l extsw %t91
+	%t95 =l mul 4, %t94
+	%t82 =l add %t83, %t95
+	%t81 =w loadw %t82
+	%t79 =w add %t80, %t81
+	storew %t79, %r
+@l8
+	%t100 =w loadw %x
+	%t101 =w loadw %i
+	%t99 =w sub %t100, %t101
+	%t97 =w cslew 0, %t99
+	%t104 =w loadw %y
+	%t105 =w loadw %i
+	%t103 =w add %t104, %t105
+	%t106 =w loadw %Q
+	%t102 =w csltw %t103, %t106
+	%t96 =w and %t97, %t102
+	jnz %t96, @l10, @l11
+@l10
+	%t109 =w loadw %r
+	%t114 =l loadl %t
+	%t116 =w loadw %x
+	%t117 =w loadw %i
+	%t115 =w sub %t116, %t117
+	%t118 =l extsw %t115
+	%t119 =l mul 8, %t118
+	%t113 =l add %t114, %t119
+	%t112 =l loadl %t113
+	%t121 =w loadw %y
+	%t122 =w loadw %i
+	%t120 =w add %t121, %t122
+	%t123 =l extsw %t120
+	%t124 =l mul 4, %t123
+	%t111 =l add %t112, %t124
+	%t110 =w loadw %t111
+	%t108 =w add %t109, %t110
+	storew %t108, %r
+@l11
+	%t129 =w loadw %x
+	%t130 =w loadw %i
+	%t128 =w sub %t129, %t130
+	%t126 =w cslew 0, %t128
+	%t134 =w loadw %y
+	%t135 =w loadw %i
+	%t133 =w sub %t134, %t135
+	%t131 =w cslew 0, %t133
+	%t125 =w and %t126, %t131
+	jnz %t125, @l13, @l14
+@l13
+	%t138 =w loadw %r
+	%t143 =l loadl %t
+	%t145 =w loadw %x
+	%t146 =w loadw %i
+	%t144 =w sub %t145, %t146
+	%t147 =l extsw %t144
+	%t148 =l mul 8, %t147
+	%t142 =l add %t143, %t148
+	%t141 =l loadl %t142
+	%t150 =w loadw %y
+	%t151 =w loadw %i
+	%t149 =w sub %t150, %t151
+	%t152 =l extsw %t149
+	%t153 =l mul 4, %t152
+	%t140 =l add %t141, %t153
+	%t139 =w loadw %t140
+	%t137 =w add %t138, %t139
+	storew %t137, %r
+@l14
+	%t155 =w loadw %i
+	%t154 =w add %t155, 1
+	storew %t154, %i
+	jmp @l1
+@l3
+	%t156 =w loadw %r
+	ret %t156
+}
+
+
+--- Output: size 5847 ---
+@l0:
+@l1:
+%t154 11 = @l0 -1 @l14 289 
+%t155 12 = @l0 -1 @l14 288 
+%t137 13 = @l0 -1 @l14 271 
+%t139 14 = @l0 -1 @l14 272 
+%t140 15 = @l0 -1 @l14 273 
+%t153 16 = @l0 -1 @l14 274 
+%t152 17 = @l0 -1 @l14 275 
+%t149 18 = @l0 -1 @l14 276 
+%t151 19 = @l0 -1 @l14 277 
+%t150 20 = @l0 -1 @l14 278 
+%t141 21 = @l0 -1 @l14 279 
+%t142 22 = @l0 -1 @l14 280 
+%t148 23 = @l0 -1 @l14 281 
+%t147 24 = @l0 -1 @l14 282 
+%t144 25 = @l0 -1 @l14 283 
+%t146 26 = @l0 -1 @l14 284 
+%t145 27 = @l0 -1 @l14 285 
+%t143 28 = @l0 -1 @l14 286 
+%t138 29 = @l0 -1 @l14 287 
+%t125 30 = @l0 -1 @l14 270 
+%t131 31 = @l0 -1 @l14 269 
+%t133 32 = @l0 -1 @l14 268 
+%t135 33 = @l0 -1 @l14 267 
+%t134 34 = @l0 -1 @l14 266 
+%t126 35 = @l0 -1 @l14 265 
+%t128 36 = @l0 -1 @l14 264 
+%t130 37 = @l0 -1 @l14 263 
+%t129 38 = @l0 -1 @l14 262 
+%t108 39 = @l0 -1 @l14 245 
+%t110 40 = @l0 -1 @l14 246 
+%t111 41 = @l0 -1 @l14 247 
+%t124 42 = @l0 -1 @l14 248 
+%t123 43 = @l0 -1 @l14 249 
+%t120 44 = @l0 -1 @l14 250 
+%t122 45 = @l0 -1 @l14 251 
+%t121 46 = @l0 -1 @l14 252 
+%t112 47 = @l0 -1 @l14 253 
+%t113 48 = @l0 -1 @l14 254 
+%t119 49 = @l0 -1 @l14 255 
+%t118 50 = @l0 -1 @l14 256 
+%t115 51 = @l0 -1 @l14 257 
+%t117 52 = @l0 -1 @l14 258 
+%t116 53 = @l0 -1 @l14 259 
+%t114 54 = @l0 -1 @l14 260 
+%t109 55 = @l0 -1 @l14 261 
+%t96 56 = @l0 -1 @l14 244 
+%t102 57 = @l0 -1 @l14 243 
+%t106 58 = @l0 -1 @l14 242 
+%t103 59 = @l0 -1 @l14 241 
+%t105 60 = @l0 -1 @l14 240 
+%t104 61 = @l0 -1 @l14 239 
+%t97 62 = @l0 -1 @l14 238 
+%t99 63 = @l0 -1 @l14 237 
+%t101 64 = @l0 -1 @l14 236 
+%t100 65 = @l0 -1 @l14 235 
+%t79 66 = @l0 -1 @l14 218 
+%t81 67 = @l0 -1 @l14 219 
+%t82 68 = @l0 -1 @l14 220 
+%t95 69 = @l0 -1 @l14 221 
+%t94 70 = @l0 -1 @l14 222 
+%t91 71 = @l0 -1 @l14 223 
+%t93 72 = @l0 -1 @l14 224 
+%t92 73 = @l0 -1 @l14 225 
+%t83 74 = @l0 -1 @l14 226 
+%t84 75 = @l0 -1 @l14 227 
+%t90 76 = @l0 -1 @l14 228 
+%t89 77 = @l0 -1 @l14 229 
+%t86 78 = @l0 -1 @l14 230 
+%t88 79 = @l0 -1 @l14 231 
+%t87 80 = @l0 -1 @l14 232 
+%t85 81 = @l0 -1 @l14 233 
+%t80 82 = @l0 -1 @l14 234 
+%t67 83 = @l0 -1 @l14 217 
+%t73 84 = @l0 -1 @l14 216 
+%t75 85 = @l0 -1 @l14 215 
+%t77 86 = @l0 -1 @l14 214 
+%t76 87 = @l0 -1 @l14 213 
+%t68 88 = @l0 -1 @l14 212 
+%t72 89 = @l0 -1 @l14 211 
+%t69 90 = @l0 -1 @l14 210 
+%t71 91 = @l0 -1 @l14 209 
+%t70 92 = @l0 -1 @l14 208 
+%t50 93 = @l0 -1 @l14 191 
+%t52 94 = @l0 -1 @l14 192 
+%t53 95 = @l0 -1 @l14 193 
+%t66 96 = @l0 -1 @l14 194 
+%t65 97 = @l0 -1 @l14 195 
+%t62 98 = @l0 -1 @l14 196 
+%t64 99 = @l0 -1 @l14 197 
+%t63 100 = @l0 -1 @l14 198 
+%t54 101 = @l0 -1 @l14 199 
+%t55 102 = @l0 -1 @l14 200 
+%t61 103 = @l0 -1 @l14 201 
+%t60 104 = @l0 -1 @l14 202 
+%t57 105 = @l0 -1 @l14 203 
+%t59 106 = @l0 -1 @l14 204 
+%t58 107 = @l0 -1 @l14 205 
+%t56 108 = @l0 -1 @l14 206 
+%t51 109 = @l0 -1 @l14 207 
+%t38 110 = @l0 -1 @l14 190 
+%t44 111 = @l0 -1 @l14 189 
+%t48 112 = @l0 -1 @l14 188 
+%t45 113 = @l0 -1 @l14 187 
+%t47 114 = @l0 -1 @l14 186 
+%t46 115 = @l0 -1 @l14 185 
+%t39 116 = @l0 -1 @l14 184 
+%t43 117 = @l0 -1 @l14 183 
+%t40 118 = @l0 -1 @l14 182 
+%t42 119 = @l0 -1 @l14 181 
+%t41 120 = @l0 -1 @l14 180 
+%t25 121 = @l0 -1 @l14 179 
+%t27 122 = @l0 -1 @l14 178 
+%t28 123 = @l0 -1 @l14 177 
+%t37 124 = @l0 -1 @l14 176 
+%t36 125 = @l0 -1 @l14 175 
+%t35 126 = @l0 -1 @l14 174 
+%t29 127 = @l0 -1 @l14 173 
+%t30 128 = @l0 -1 @l14 172 
+%t34 129 = @l0 -1 @l14 171 
+%t33 130 = @l0 -1 @l14 170 
+%t32 131 = @l0 -1 @l14 169 
+%t31 132 = @l0 -1 @l14 168 
+%t26 133 = @l0 -1 @l14 167 
+%t11 134 = @l0 -1 @l14 166 
+%t13 135 = @l0 -1 @l14 165 
+%t14 136 = @l0 -1 @l14 164 
+%t23 137 = @l0 -1 @l14 163 
+%t22 138 = @l0 -1 @l14 162 
+%t21 139 = @l0 -1 @l14 161 
+%t15 140 = @l0 -1 @l14 160 
+%t16 141 = @l0 -1 @l14 159 
+%t20 142 = @l0 -1 @l14 158 
+%t19 143 = @l0 -1 @l14 157 
+%t18 144 = @l0 -1 @l14 156 
+%t17 145 = @l0 -1 @l14 155 
+%t12 146 = @l0 -1 @l14 154 
+%t7 147 = @l0 -1 @l14 152 
+%t9 148 = @l0 -1 @l14 151 
+%t8 149 = @l0 -1 @l14 150 
+@l2:
+@l4:
+@l5:
+%t50 191 = @l2 93 @l4 357 
+%t52 192 = @l2 94 @l4 356 
+%t53 193 = @l2 95 @l4 355 
+%t66 194 = @l2 96 @l4 354 
+%t65 195 = @l2 97 @l4 353 
+%t62 196 = @l2 98 @l4 352 
+%t64 197 = @l2 99 @l4 351 
+%t63 198 = @l2 100 @l4 350 
+%t54 199 = @l2 101 @l4 349 
+%t55 200 = @l2 102 @l4 348 
+%t61 201 = @l2 103 @l4 347 
+%t60 202 = @l2 104 @l4 346 
+%t57 203 = @l2 105 @l4 345 
+%t59 204 = @l2 106 @l4 344 
+%t58 205 = @l2 107 @l4 343 
+%t56 206 = @l2 108 @l4 342 
+%t51 207 = @l2 109 @l4 341 
+@l7:
+@l8:
+%t79 218 = @l5 66 @l7 340 
+%t81 219 = @l5 67 @l7 339 
+%t82 220 = @l5 68 @l7 338 
+%t95 221 = @l5 69 @l7 337 
+%t94 222 = @l5 70 @l7 336 
+%t91 223 = @l5 71 @l7 335 
+%t93 224 = @l5 72 @l7 334 
+%t92 225 = @l5 73 @l7 333 
+%t83 226 = @l5 74 @l7 332 
+%t84 227 = @l5 75 @l7 331 
+%t90 228 = @l5 76 @l7 330 
+%t89 229 = @l5 77 @l7 329 
+%t86 230 = @l5 78 @l7 328 
+%t88 231 = @l5 79 @l7 327 
+%t87 232 = @l5 80 @l7 326 
+%t85 233 = @l5 81 @l7 325 
+%t80 234 = @l5 82 @l7 324 
+@l10:
+@l11:
+%t108 245 = @l8 39 @l10 323 
+%t110 246 = @l8 40 @l10 322 
+%t111 247 = @l8 41 @l10 321 
+%t124 248 = @l8 42 @l10 320 
+%t123 249 = @l8 43 @l10 319 
+%t120 250 = @l8 44 @l10 318 
+%t122 251 = @l8 45 @l10 317 
+%t121 252 = @l8 46 @l10 316 
+%t112 253 = @l8 47 @l10 315 
+%t113 254 = @l8 48 @l10 314 
+%t119 255 = @l8 49 @l10 313 
+%t118 256 = @l8 50 @l10 312 
+%t115 257 = @l8 51 @l10 311 
+%t117 258 = @l8 52 @l10 310 
+%t116 259 = @l8 53 @l10 309 
+%t114 260 = @l8 54 @l10 308 
+%t109 261 = @l8 55 @l10 307 
+@l13:
+@l14:
+%t137 271 = @l11 13 @l13 306 
+%t139 272 = @l11 14 @l13 305 
+%t140 273 = @l11 15 @l13 304 
+%t153 274 = @l11 16 @l13 303 
+%t152 275 = @l11 17 @l13 302 
+%t149 276 = @l11 18 @l13 301 
+%t151 277 = @l11 19 @l13 300 
+%t150 278 = @l11 20 @l13 299 
+%t141 279 = @l11 21 @l13 298 
+%t142 280 = @l11 22 @l13 297 
+%t148 281 = @l11 23 @l13 296 
+%t147 282 = @l11 24 @l13 295 
+%t144 283 = @l11 25 @l13 294 
+%t146 284 = @l11 26 @l13 293 
+%t145 285 = @l11 27 @l13 292 
+%t143 286 = @l11 28 @l13 291 
+%t138 287 = @l11 29 @l13 290 
+@l3:
+
+--- Correct: size 5847 ---
+@l0:
+@l1:
+%t154 11 = @l0 -1 @l14 289 
+%t155 12 = @l0 -1 @l14 288 
+%t137 13 = @l0 -1 @l14 271 
+%t139 14 = @l0 -1 @l14 272 
+%t140 15 = @l0 -1 @l14 273 
+%t153 16 = @l0 -1 @l14 274 
+%t152 17 = @l0 -1 @l14 275 
+%t149 18 = @l0 -1 @l14 276 
+%t151 19 = @l0 -1 @l14 277 
+%t150 20 = @l0 -1 @l14 278 
+%t141 21 = @l0 -1 @l14 279 
+%t142 22 = @l0 -1 @l14 280 
+%t148 23 = @l0 -1 @l14 281 
+%t147 24 = @l0 -1 @l14 282 
+%t144 25 = @l0 -1 @l14 283 
+%t146 26 = @l0 -1 @l14 284 
+%t145 27 = @l0 -1 @l14 285 
+%t143 28 = @l0 -1 @l14 286 
+%t138 29 = @l0 -1 @l14 287 
+%t125 30 = @l0 -1 @l14 270 
+%t131 31 = @l0 -1 @l14 269 
+%t133 32 = @l0 -1 @l14 268 
+%t135 33 = @l0 -1 @l14 267 
+%t134 34 = @l0 -1 @l14 266 
+%t126 35 = @l0 -1 @l14 265 
+%t128 36 = @l0 -1 @l14 264 
+%t130 37 = @l0 -1 @l14 263 
+%t129 38 = @l0 -1 @l14 262 
+%t108 39 = @l0 -1 @l14 245 
+%t110 40 = @l0 -1 @l14 246 
+%t111 41 = @l0 -1 @l14 247 
+%t124 42 = @l0 -1 @l14 248 
+%t123 43 = @l0 -1 @l14 249 
+%t120 44 = @l0 -1 @l14 250 
+%t122 45 = @l0 -1 @l14 251 
+%t121 46 = @l0 -1 @l14 252 
+%t112 47 = @l0 -1 @l14 253 
+%t113 48 = @l0 -1 @l14 254 
+%t119 49 = @l0 -1 @l14 255 
+%t118 50 = @l0 -1 @l14 256 
+%t115 51 = @l0 -1 @l14 257 
+%t117 52 = @l0 -1 @l14 258 
+%t116 53 = @l0 -1 @l14 259 
+%t114 54 = @l0 -1 @l14 260 
+%t109 55 = @l0 -1 @l14 261 
+%t96 56 = @l0 -1 @l14 244 
+%t102 57 = @l0 -1 @l14 243 
+%t106 58 = @l0 -1 @l14 242 
+%t103 59 = @l0 -1 @l14 241 
+%t105 60 = @l0 -1 @l14 240 
+%t104 61 = @l0 -1 @l14 239 
+%t97 62 = @l0 -1 @l14 238 
+%t99 63 = @l0 -1 @l14 237 
+%t101 64 = @l0 -1 @l14 236 
+%t100 65 = @l0 -1 @l14 235 
+%t79 66 = @l0 -1 @l14 218 
+%t81 67 = @l0 -1 @l14 219 
+%t82 68 = @l0 -1 @l14 220 
+%t95 69 = @l0 -1 @l14 221 
+%t94 70 = @l0 -1 @l14 222 
+%t91 71 = @l0 -1 @l14 223 
+%t93 72 = @l0 -1 @l14 224 
+%t92 73 = @l0 -1 @l14 225 
+%t83 74 = @l0 -1 @l14 226 
+%t84 75 = @l0 -1 @l14 227 
+%t90 76 = @l0 -1 @l14 228 
+%t89 77 = @l0 -1 @l14 229 
+%t86 78 = @l0 -1 @l14 230 
+%t88 79 = @l0 -1 @l14 231 
+%t87 80 = @l0 -1 @l14 232 
+%t85 81 = @l0 -1 @l14 233 
+%t80 82 = @l0 -1 @l14 234 
+%t67 83 = @l0 -1 @l14 217 
+%t73 84 = @l0 -1 @l14 216 
+%t75 85 = @l0 -1 @l14 215 
+%t77 86 = @l0 -1 @l14 214 
+%t76 87 = @l0 -1 @l14 213 
+%t68 88 = @l0 -1 @l14 212 
+%t72 89 = @l0 -1 @l14 211 
+%t69 90 = @l0 -1 @l14 210 
+%t71 91 = @l0 -1 @l14 209 
+%t70 92 = @l0 -1 @l14 208 
+%t50 93 = @l0 -1 @l14 191 
+%t52 94 = @l0 -1 @l14 192 
+%t53 95 = @l0 -1 @l14 193 
+%t66 96 = @l0 -1 @l14 194 
+%t65 97 = @l0 -1 @l14 195 
+%t62 98 = @l0 -1 @l14 196 
+%t64 99 = @l0 -1 @l14 197 
+%t63 100 = @l0 -1 @l14 198 
+%t54 101 = @l0 -1 @l14 199 
+%t55 102 = @l0 -1 @l14 200 
+%t61 103 = @l0 -1 @l14 201 
+%t60 104 = @l0 -1 @l14 202 
+%t57 105 = @l0 -1 @l14 203 
+%t59 106 = @l0 -1 @l14 204 
+%t58 107 = @l0 -1 @l14 205 
+%t56 108 = @l0 -1 @l14 206 
+%t51 109 = @l0 -1 @l14 207 
+%t38 110 = @l0 -1 @l14 190 
+%t44 111 = @l0 -1 @l14 189 
+%t48 112 = @l0 -1 @l14 188 
+%t45 113 = @l0 -1 @l14 187 
+%t47 114 = @l0 -1 @l14 186 
+%t46 115 = @l0 -1 @l14 185 
+%t39 116 = @l0 -1 @l14 184 
+%t43 117 = @l0 -1 @l14 183 
+%t40 118 = @l0 -1 @l14 182 
+%t42 119 = @l0 -1 @l14 181 
+%t41 120 = @l0 -1 @l14 180 
+%t25 121 = @l0 -1 @l14 179 
+%t27 122 = @l0 -1 @l14 178 
+%t28 123 = @l0 -1 @l14 177 
+%t37 124 = @l0 -1 @l14 176 
+%t36 125 = @l0 -1 @l14 175 
+%t35 126 = @l0 -1 @l14 174 
+%t29 127 = @l0 -1 @l14 173 
+%t30 128 = @l0 -1 @l14 172 
+%t34 129 = @l0 -1 @l14 171 
+%t33 130 = @l0 -1 @l14 170 
+%t32 131 = @l0 -1 @l14 169 
+%t31 132 = @l0 -1 @l14 168 
+%t26 133 = @l0 -1 @l14 167 
+%t11 134 = @l0 -1 @l14 166 
+%t13 135 = @l0 -1 @l14 165 
+%t14 136 = @l0 -1 @l14 164 
+%t23 137 = @l0 -1 @l14 163 
+%t22 138 = @l0 -1 @l14 162 
+%t21 139 = @l0 -1 @l14 161 
+%t15 140 = @l0 -1 @l14 160 
+%t16 141 = @l0 -1 @l14 159 
+%t20 142 = @l0 -1 @l14 158 
+%t19 143 = @l0 -1 @l14 157 
+%t18 144 = @l0 -1 @l14 156 
+%t17 145 = @l0 -1 @l14 155 
+%t12 146 = @l0 -1 @l14 154 
+%t7 147 = @l0 -1 @l14 152 
+%t9 148 = @l0 -1 @l14 151 
+%t8 149 = @l0 -1 @l14 150 
+@l2:
+@l4:
+@l5:
+%t50 191 = @l2 93 @l4 357 
+%t52 192 = @l2 94 @l4 356 
+%t53 193 = @l2 95 @l4 355 
+%t66 194 = @l2 96 @l4 354 
+%t65 195 = @l2 97 @l4 353 
+%t62 196 = @l2 98 @l4 352 
+%t64 197 = @l2 99 @l4 351 
+%t63 198 = @l2 100 @l4 350 
+%t54 199 = @l2 101 @l4 349 
+%t55 200 = @l2 102 @l4 348 
+%t61 201 = @l2 103 @l4 347 
+%t60 202 = @l2 104 @l4 346 
+%t57 203 = @l2 105 @l4 345 
+%t59 204 = @l2 106 @l4 344 
+%t58 205 = @l2 107 @l4 343 
+%t56 206 = @l2 108 @l4 342 
+%t51 207 = @l2 109 @l4 341 
+@l7:
+@l8:
+%t79 218 = @l5 66 @l7 340 
+%t81 219 = @l5 67 @l7 339 
+%t82 220 = @l5 68 @l7 338 
+%t95 221 = @l5 69 @l7 337 
+%t94 222 = @l5 70 @l7 336 
+%t91 223 = @l5 71 @l7 335 
+%t93 224 = @l5 72 @l7 334 
+%t92 225 = @l5 73 @l7 333 
+%t83 226 = @l5 74 @l7 332 
+%t84 227 = @l5 75 @l7 331 
+%t90 228 = @l5 76 @l7 330 
+%t89 229 = @l5 77 @l7 329 
+%t86 230 = @l5 78 @l7 328 
+%t88 231 = @l5 79 @l7 327 
+%t87 232 = @l5 80 @l7 326 
+%t85 233 = @l5 81 @l7 325 
+%t80 234 = @l5 82 @l7 324 
+@l10:
+@l11:
+%t108 245 = @l8 39 @l10 323 
+%t110 246 = @l8 40 @l10 322 
+%t111 247 = @l8 41 @l10 321 
+%t124 248 = @l8 42 @l10 320 
+%t123 249 = @l8 43 @l10 319 
+%t120 250 = @l8 44 @l10 318 
+%t122 251 = @l8 45 @l10 317 
+%t121 252 = @l8 46 @l10 316 
+%t112 253 = @l8 47 @l10 315 
+%t113 254 = @l8 48 @l10 314 
+%t119 255 = @l8 49 @l10 313 
+%t118 256 = @l8 50 @l10 312 
+%t115 257 = @l8 51 @l10 311 
+%t117 258 = @l8 52 @l10 310 
+%t116 259 = @l8 53 @l10 309 
+%t114 260 = @l8 54 @l10 308 
+%t109 261 = @l8 55 @l10 307 
+@l13:
+@l14:
+%t137 271 = @l11 13 @l13 306 
+%t139 272 = @l11 14 @l13 305 
+%t140 273 = @l11 15 @l13 304 
+%t153 274 = @l11 16 @l13 303 
+%t152 275 = @l11 17 @l13 302 
+%t149 276 = @l11 18 @l13 301 
+%t151 277 = @l11 19 @l13 300 
+%t150 278 = @l11 20 @l13 299 
+%t141 279 = @l11 21 @l13 298 
+%t142 280 = @l11 22 @l13 297 
+%t148 281 = @l11 23 @l13 296 
+%t147 282 = @l11 24 @l13 295 
+%t144 283 = @l11 25 @l13 294 
+%t146 284 = @l11 26 @l13 293 
+%t145 285 = @l11 27 @l13 292 
+%t143 286 = @l11 28 @l13 291 
+%t138 287 = @l11 29 @l13 290 
+@l3:
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=8, stime=0, ptime=8, rtime=12, maxvsz=35561472, maxrss=4526080, nvcsw=1, nivcsw=2 }
+checker: { utime=2348, stime=380, ptime=2728, rtime=2766, maxvsz=11415552, maxrss=90636288, nvcsw=521, nivcsw=393 }
+
+====== Test #18 =======
+--- Input: size 1274 ---
+export function w $go(w %t0, w %t1, l %t2, w %t3) {
+@l0
+	%y =l alloc4 4
+	storew %t0, %y
+	%Q =l alloc4 4
+	storew %t1, %Q
+	%t =l alloc8 8
+	storel %t2, %t
+	%N =l alloc4 4
+	storew %t3, %N
+	%x =l alloc4 4
+	%t5 =w loadw %y
+	%t6 =w loadw %Q
+	%t4 =w ceqw %t5, %t6
+	jnz %t4, @l1, @l2
+@l1
+	%t7 =w call $print(...)
+	%t9 =w loadw %N
+	%t8 =w add %t9, 1
+	storew %t8, %N
+	ret 0
+@l2
+	storew 0, %x
+@l4
+	%t14 =w loadw %x
+	%t15 =w loadw %Q
+	%t13 =w csltw %t14, %t15
+	jnz %t13, @l5, @l6
+@l5
+	%t18 =w loadw %x
+	%t19 =w loadw %y
+	%t17 =w call $chk(w %t18, w %t19, ...)
+	%t16 =w ceqw %t17, 0
+	jnz %t16, @l7, @l8
+@l7
+	%t25 =l loadl %t
+	%t26 =w loadw %x
+	%t27 =l extsw %t26
+	%t28 =l mul 8, %t27
+	%t24 =l add %t25, %t28
+	%t23 =l loadl %t24
+	%t29 =w loadw %y
+	%t30 =l extsw %t29
+	%t31 =l mul 4, %t30
+	%t22 =l add %t23, %t31
+	%t32 =w loadw %t22
+	%t21 =w add %t32, 1
+	storew %t21, %t22
+	%t35 =w loadw %y
+	%t34 =w add %t35, 1
+	%t33 =w call $go(w %t34, ...)
+	%t41 =l loadl %t
+	%t42 =w loadw %x
+	%t43 =l extsw %t42
+	%t44 =l mul 8, %t43
+	%t40 =l add %t41, %t44
+	%t39 =l loadl %t40
+	%t45 =w loadw %y
+	%t46 =l extsw %t45
+	%t47 =l mul 4, %t46
+	%t38 =l add %t39, %t47
+	%t48 =w loadw %t38
+	%t37 =w sub %t48, 1
+	storew %t37, %t38
+@l8
+	%t50 =w loadw %x
+	%t49 =w add %t50, 1
+	storew %t49, %x
+	jmp @l4
+@l6
+	ret 0
+}
+
+
+--- Output: size 1627 ---
+@l0:
+@l1:
+@l2:
+@l4:
+%t49 13 = @l2 -1 @l8 84 
+%t50 14 = @l2 -1 @l8 83 
+%t37 15 = @l2 -1 @l8 56 
+%t48 16 = @l2 -1 @l8 57 
+%t38 17 = @l2 -1 @l8 58 
+%t47 18 = @l2 -1 @l8 59 
+%t46 19 = @l2 -1 @l8 60 
+%t45 20 = @l2 -1 @l8 61 
+%t39 21 = @l2 -1 @l8 62 
+%t40 22 = @l2 -1 @l8 63 
+%t44 23 = @l2 -1 @l8 64 
+%t43 24 = @l2 -1 @l8 65 
+%t42 25 = @l2 -1 @l8 66 
+%t41 26 = @l2 -1 @l8 67 
+%t33 27 = @l2 -1 @l8 68 
+%t34 28 = @l2 -1 @l8 69 
+%t35 29 = @l2 -1 @l8 70 
+%t21 30 = @l2 -1 @l8 71 
+%t32 31 = @l2 -1 @l8 72 
+%t22 32 = @l2 -1 @l8 73 
+%t31 33 = @l2 -1 @l8 74 
+%t30 34 = @l2 -1 @l8 75 
+%t29 35 = @l2 -1 @l8 76 
+%t23 36 = @l2 -1 @l8 77 
+%t24 37 = @l2 -1 @l8 78 
+%t28 38 = @l2 -1 @l8 79 
+%t27 39 = @l2 -1 @l8 80 
+%t26 40 = @l2 -1 @l8 81 
+%t25 41 = @l2 -1 @l8 82 
+%t16 42 = @l2 -1 @l8 55 
+%t17 43 = @l2 -1 @l8 54 
+%t19 44 = @l2 -1 @l8 53 
+%t18 45 = @l2 -1 @l8 52 
+%t13 46 = @l2 -1 @l8 51 
+%t15 47 = @l2 -1 @l8 50 
+%t14 48 = @l2 -1 @l8 49 
+@l5:
+@l7:
+@l8:
+%t37 56 = @l5 15 @l7 111 
+%t48 57 = @l5 16 @l7 110 
+%t38 58 = @l5 17 @l7 109 
+%t47 59 = @l5 18 @l7 108 
+%t46 60 = @l5 19 @l7 107 
+%t45 61 = @l5 20 @l7 106 
+%t39 62 = @l5 21 @l7 105 
+%t40 63 = @l5 22 @l7 104 
+%t44 64 = @l5 23 @l7 103 
+%t43 65 = @l5 24 @l7 102 
+%t42 66 = @l5 25 @l7 101 
+%t41 67 = @l5 26 @l7 100 
+%t33 68 = @l5 27 @l7 99 
+%t34 69 = @l5 28 @l7 98 
+%t35 70 = @l5 29 @l7 97 
+%t21 71 = @l5 30 @l7 96 
+%t32 72 = @l5 31 @l7 95 
+%t22 73 = @l5 32 @l7 94 
+%t31 74 = @l5 33 @l7 93 
+%t30 75 = @l5 34 @l7 92 
+%t29 76 = @l5 35 @l7 91 
+%t23 77 = @l5 36 @l7 90 
+%t24 78 = @l5 37 @l7 89 
+%t28 79 = @l5 38 @l7 88 
+%t27 80 = @l5 39 @l7 87 
+%t26 81 = @l5 40 @l7 86 
+%t25 82 = @l5 41 @l7 85 
+@l6:
+
+--- Correct: size 1627 ---
+@l0:
+@l1:
+@l2:
+@l4:
+%t49 13 = @l2 -1 @l8 84 
+%t50 14 = @l2 -1 @l8 83 
+%t37 15 = @l2 -1 @l8 56 
+%t48 16 = @l2 -1 @l8 57 
+%t38 17 = @l2 -1 @l8 58 
+%t47 18 = @l2 -1 @l8 59 
+%t46 19 = @l2 -1 @l8 60 
+%t45 20 = @l2 -1 @l8 61 
+%t39 21 = @l2 -1 @l8 62 
+%t40 22 = @l2 -1 @l8 63 
+%t44 23 = @l2 -1 @l8 64 
+%t43 24 = @l2 -1 @l8 65 
+%t42 25 = @l2 -1 @l8 66 
+%t41 26 = @l2 -1 @l8 67 
+%t33 27 = @l2 -1 @l8 68 
+%t34 28 = @l2 -1 @l8 69 
+%t35 29 = @l2 -1 @l8 70 
+%t21 30 = @l2 -1 @l8 71 
+%t32 31 = @l2 -1 @l8 72 
+%t22 32 = @l2 -1 @l8 73 
+%t31 33 = @l2 -1 @l8 74 
+%t30 34 = @l2 -1 @l8 75 
+%t29 35 = @l2 -1 @l8 76 
+%t23 36 = @l2 -1 @l8 77 
+%t24 37 = @l2 -1 @l8 78 
+%t28 38 = @l2 -1 @l8 79 
+%t27 39 = @l2 -1 @l8 80 
+%t26 40 = @l2 -1 @l8 81 
+%t25 41 = @l2 -1 @l8 82 
+%t16 42 = @l2 -1 @l8 55 
+%t17 43 = @l2 -1 @l8 54 
+%t19 44 = @l2 -1 @l8 53 
+%t18 45 = @l2 -1 @l8 52 
+%t13 46 = @l2 -1 @l8 51 
+%t15 47 = @l2 -1 @l8 50 
+%t14 48 = @l2 -1 @l8 49 
+@l5:
+@l7:
+@l8:
+%t37 56 = @l5 15 @l7 111 
+%t48 57 = @l5 16 @l7 110 
+%t38 58 = @l5 17 @l7 109 
+%t47 59 = @l5 18 @l7 108 
+%t46 60 = @l5 19 @l7 107 
+%t45 61 = @l5 20 @l7 106 
+%t39 62 = @l5 21 @l7 105 
+%t40 63 = @l5 22 @l7 104 
+%t44 64 = @l5 23 @l7 103 
+%t43 65 = @l5 24 @l7 102 
+%t42 66 = @l5 25 @l7 101 
+%t41 67 = @l5 26 @l7 100 
+%t33 68 = @l5 27 @l7 99 
+%t34 69 = @l5 28 @l7 98 
+%t35 70 = @l5 29 @l7 97 
+%t21 71 = @l5 30 @l7 96 
+%t32 72 = @l5 31 @l7 95 
+%t22 73 = @l5 32 @l7 94 
+%t31 74 = @l5 33 @l7 93 
+%t30 75 = @l5 34 @l7 92 
+%t29 76 = @l5 35 @l7 91 
+%t23 77 = @l5 36 @l7 90 
+%t24 78 = @l5 37 @l7 89 
+%t28 79 = @l5 38 @l7 88 
+%t27 80 = @l5 39 @l7 87 
+%t26 81 = @l5 40 @l7 86 
+%t25 82 = @l5 41 @l7 85 
+@l6:
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=4, stime=0, ptime=4, rtime=8, maxvsz=35061760, maxrss=4460544, nvcsw=1, nivcsw=1 }
+checker: { utime=1824, stime=340, ptime=2164, rtime=2179, maxvsz=11415552, maxrss=90664960, nvcsw=333, nivcsw=197 }
+
+====== Test #19 =======
+--- Input: size 852 ---
+export function w $main(w %t0, l %t1, w %t2, w %t3, l %glo1) {
+@l0
+	%ac =l alloc4 4
+	storew %t0, %ac
+	%av =l alloc8 8
+	storel %t1, %av
+	%Q =l alloc4 4
+	storew %t2, %Q
+	%N =l alloc4 4
+	storew %t3, %N
+	%i =l alloc4 4
+	%t =l alloc8 8
+	storew 8, %Q
+	%t8 =w loadw %ac
+	%t6 =w cslew 2, %t8
+	jnz %t6, @l1, @l2
+@l1
+	%t13 =l loadl %av
+	%t12 =l add %t13, 8
+	%t11 =l loadl %t12
+	%t10 =w call $atoi(l %t11, ...)
+	storew %t10, %Q
+@l2
+	storew 0, %i
+@l4
+	%t18 =w loadw %i
+	%t19 =w loadw %Q
+	%t17 =w csltw %t18, %t19
+	jnz %t17, @l5, @l6
+@l5
+	%t22 =w loadw %Q
+	%t21 =w mul %t22, 4
+	%t25 =l loadl %t
+	%t26 =w loadw %i
+	%t27 =l extsw %t26
+	%t28 =l mul 4, %t27
+	%t24 =l add %t25, %t28
+	storew %t21, %t24
+	%t30 =w loadw %i
+	%t29 =w add %t30, 1
+	storew %t29, %i
+	jmp @l4
+@l6
+	%t31 =w call $go(w 0, ...)
+	%t35 =w loadw %N
+	%t33 =w call $printf(l %glo1, w %t35, ...)
+	ret 0
+}
+
+--- Output: size 430 ---
+@l0:
+@l1:
+@l2:
+%t10 14 = @l0 -1 @l1 48 
+%t11 15 = @l0 -1 @l1 47 
+%t12 16 = @l0 -1 @l1 46 
+%t13 17 = @l0 -1 @l1 45 
+@l4:
+%t29 18 = @l2 -1 @l5 44 
+%t30 19 = @l2 -1 @l5 43 
+%t24 20 = @l2 -1 @l5 42 
+%t28 21 = @l2 -1 @l5 41 
+%t27 22 = @l2 -1 @l5 40 
+%t26 23 = @l2 -1 @l5 39 
+%t25 24 = @l2 -1 @l5 38 
+%t21 25 = @l2 -1 @l5 37 
+%t22 26 = @l2 -1 @l5 36 
+%t17 27 = @l2 -1 @l5 32 
+%t19 28 = @l2 -1 @l5 31 
+%t18 29 = @l2 -1 @l5 30 
+@l5:
+@l6:
+
+--- Correct: size 430 ---
+@l0:
+@l1:
+@l2:
+%t10 14 = @l0 -1 @l1 48 
+%t11 15 = @l0 -1 @l1 47 
+%t12 16 = @l0 -1 @l1 46 
+%t13 17 = @l0 -1 @l1 45 
+@l4:
+%t29 18 = @l2 -1 @l5 44 
+%t30 19 = @l2 -1 @l5 43 
+%t24 20 = @l2 -1 @l5 42 
+%t28 21 = @l2 -1 @l5 41 
+%t27 22 = @l2 -1 @l5 40 
+%t26 23 = @l2 -1 @l5 39 
+%t25 24 = @l2 -1 @l5 38 
+%t21 25 = @l2 -1 @l5 37 
+%t22 26 = @l2 -1 @l5 36 
+%t17 27 = @l2 -1 @l5 32 
+%t19 28 = @l2 -1 @l5 31 
+%t18 29 = @l2 -1 @l5 30 
+@l5:
+@l6:
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=0, stime=4, ptime=4, rtime=7, maxvsz=22167552, maxrss=4509696, nvcsw=1, nivcsw=3 }
+checker: { utime=2064, stime=348, ptime=2412, rtime=2440, maxvsz=11415552, maxrss=90701824, nvcsw=505, nivcsw=505 }
+
+====== Test #20 =======
+--- Input: size 1331 ---
+export function w $main(l %glo1) {
+@l0
+	%n =l alloc4 4
+	%nv =l alloc4 4
+	%c =l alloc4 4
+	%cmax =l alloc4 4
+	%mem =l alloc8 8
+	storew 0, %cmax
+	storew 1, %nv
+@l1
+	%t5 =w loadw %nv
+	%t4 =w csltw %t5, 10
+	jnz %t4, @l2, @l3
+@l2
+	%t8 =w loadw %nv
+	storew %t8, %n
+	storew 0, %c
+@l4
+	%t12 =w loadw %n
+	%t11 =w cnew %t12, 1
+	jnz %t11, @l5, @l6
+@l5
+	%t15 =w loadw %n
+	%t16 =w loadw %nv
+	%t14 =w csltw %t15, %t16
+	jnz %t14, @l7, @l8
+@l7
+	%t19 =w loadw %c
+	%t22 =l loadl %mem
+	%t23 =w loadw %n
+	%t24 =l extsw %t23
+	%t25 =l mul 4, %t24
+	%t21 =l add %t22, %t25
+	%t20 =w loadw %t21
+	%t18 =w add %t19, %t20
+	storew %t18, %c
+	jmp @l6
+@l8
+	%t27 =w loadw %n
+	%t26 =w and %t27, 1
+	jnz %t26, @l10, @l11
+@l10
+	%t33 =w loadw %n
+	%t31 =w mul 3, %t33
+	%t30 =w add %t31, 1
+	storew %t30, %n
+	jmp @l12
+@l11
+	%t37 =w loadw %n
+	%t36 =w div %t37, 2
+	storew %t36, %n
+@l12
+	%t40 =w loadw %c
+	%t39 =w add %t40, 1
+	storew %t39, %c
+	jmp @l4
+@l6
+	%t42 =w loadw %c
+	%t44 =l loadl %mem
+	%t45 =w loadw %nv
+	%t46 =l extsw %t45
+	%t47 =l mul 4, %t46
+	%t43 =l add %t44, %t47
+	storew %t42, %t43
+	%t49 =w loadw %cmax
+	%t50 =w loadw %c
+	%t48 =w csltw %t49, %t50
+	jnz %t48, @l13, @l14
+@l13
+	%t52 =w loadw %c
+	storew %t52, %cmax
+@l14
+	%t54 =w loadw %nv
+	%t53 =w add %t54, 1
+	storew %t53, %nv
+	jmp @l1
+@l3
+	%t57 =w loadw %cmax
+	%t55 =w call $printf(l %glo1, w %t57, ...)
+	ret 0
+}
+
+--- Output: size 1844 ---
+@l0:
+@l1:
+%t53 7 = @l0 -1 @l14 87 
+%t54 8 = @l0 -1 @l14 86 
+%t52 9 = @l0 -1 @l14 85 
+%t48 10 = @l0 -1 @l14 84 
+%t50 11 = @l0 -1 @l14 83 
+%t49 12 = @l0 -1 @l14 82 
+%t43 13 = @l0 -1 @l14 81 
+%t47 14 = @l0 -1 @l14 80 
+%t46 15 = @l0 -1 @l14 79 
+%t45 16 = @l0 -1 @l14 78 
+%t44 17 = @l0 -1 @l14 77 
+%t42 18 = @l0 -1 @l14 76 
+%t39 19 = @l0 -1 @l14 49 
+%t40 20 = @l0 -1 @l14 50 
+%t36 21 = @l0 -1 @l14 51 
+%t37 22 = @l0 -1 @l14 52 
+%t30 23 = @l0 -1 @l14 53 
+%t31 24 = @l0 -1 @l14 54 
+%t33 25 = @l0 -1 @l14 55 
+%t26 26 = @l0 -1 @l14 56 
+%t27 27 = @l0 -1 @l14 57 
+%t18 28 = @l0 -1 @l14 65 
+%t20 29 = @l0 -1 @l14 66 
+%t21 30 = @l0 -1 @l14 67 
+%t25 31 = @l0 -1 @l14 68 
+%t24 32 = @l0 -1 @l14 69 
+%t23 33 = @l0 -1 @l14 70 
+%t22 34 = @l0 -1 @l14 71 
+%t19 35 = @l0 -1 @l14 72 
+%t14 36 = @l0 -1 @l14 73 
+%t16 37 = @l0 -1 @l14 74 
+%t15 38 = @l0 -1 @l14 75 
+%t11 39 = @l0 -1 @l14 64 
+%t12 40 = @l0 -1 @l14 63 
+%t8 41 = @l0 -1 @l14 48 
+%t4 42 = @l0 -1 @l14 45 
+%t5 43 = @l0 -1 @l14 44 
+@l2:
+@l4:
+%t39 49 = @l2 19 @l12 100 
+%t40 50 = @l2 20 @l12 99 
+%t36 51 = @l2 21 @l12 94 
+%t37 52 = @l2 22 @l12 95 
+%t30 53 = @l2 23 @l12 96 
+%t31 54 = @l2 24 @l12 97 
+%t33 55 = @l2 25 @l12 98 
+%t26 56 = @l2 26 @l12 93 
+%t27 57 = @l2 27 @l12 92 
+%t14 58 = @l2 36 @l12 91 
+%t16 59 = @l2 37 @l12 90 
+%t15 60 = @l2 38 @l12 89 
+%t11 61 = @l2 39 @l12 64 
+%t12 62 = @l2 40 @l12 63 
+@l5:
+@l7:
+@l8:
+@l10:
+@l11:
+@l12:
+%t36 94 = @l11 102 @l10 51 
+%t37 95 = @l11 101 @l10 52 
+%t30 96 = @l11 53 @l10 105 
+%t31 97 = @l11 54 @l10 104 
+%t33 98 = @l11 55 @l10 103 
+@l6:
+%t18 65 = @l4 28 @l7 113 
+%t20 66 = @l4 29 @l7 112 
+%t21 67 = @l4 30 @l7 111 
+%t25 68 = @l4 31 @l7 110 
+%t24 69 = @l4 32 @l7 109 
+%t23 70 = @l4 33 @l7 108 
+%t22 71 = @l4 34 @l7 107 
+%t19 72 = @l4 35 @l7 106 
+%t14 73 = @l4 58 @l7 91 
+%t16 74 = @l4 59 @l7 90 
+%t15 75 = @l4 60 @l7 89 
+@l13:
+@l14:
+%t52 85 = @l6 9 @l13 88 
+@l3:
+
+--- Correct: size 1844 ---
+@l0:
+@l1:
+%t53 7 = @l0 -1 @l14 87 
+%t54 8 = @l0 -1 @l14 86 
+%t52 9 = @l0 -1 @l14 85 
+%t48 10 = @l0 -1 @l14 84 
+%t50 11 = @l0 -1 @l14 83 
+%t49 12 = @l0 -1 @l14 82 
+%t43 13 = @l0 -1 @l14 81 
+%t47 14 = @l0 -1 @l14 80 
+%t46 15 = @l0 -1 @l14 79 
+%t45 16 = @l0 -1 @l14 78 
+%t44 17 = @l0 -1 @l14 77 
+%t42 18 = @l0 -1 @l14 76 
+%t39 19 = @l0 -1 @l14 49 
+%t40 20 = @l0 -1 @l14 50 
+%t36 21 = @l0 -1 @l14 51 
+%t37 22 = @l0 -1 @l14 52 
+%t30 23 = @l0 -1 @l14 53 
+%t31 24 = @l0 -1 @l14 54 
+%t33 25 = @l0 -1 @l14 55 
+%t26 26 = @l0 -1 @l14 56 
+%t27 27 = @l0 -1 @l14 57 
+%t18 28 = @l0 -1 @l14 65 
+%t20 29 = @l0 -1 @l14 66 
+%t21 30 = @l0 -1 @l14 67 
+%t25 31 = @l0 -1 @l14 68 
+%t24 32 = @l0 -1 @l14 69 
+%t23 33 = @l0 -1 @l14 70 
+%t22 34 = @l0 -1 @l14 71 
+%t19 35 = @l0 -1 @l14 72 
+%t14 36 = @l0 -1 @l14 73 
+%t16 37 = @l0 -1 @l14 74 
+%t15 38 = @l0 -1 @l14 75 
+%t11 39 = @l0 -1 @l14 64 
+%t12 40 = @l0 -1 @l14 63 
+%t8 41 = @l0 -1 @l14 48 
+%t4 42 = @l0 -1 @l14 45 
+%t5 43 = @l0 -1 @l14 44 
+@l2:
+@l4:
+%t39 49 = @l2 19 @l12 100 
+%t40 50 = @l2 20 @l12 99 
+%t36 51 = @l2 21 @l12 94 
+%t37 52 = @l2 22 @l12 95 
+%t30 53 = @l2 23 @l12 96 
+%t31 54 = @l2 24 @l12 97 
+%t33 55 = @l2 25 @l12 98 
+%t26 56 = @l2 26 @l12 93 
+%t27 57 = @l2 27 @l12 92 
+%t14 58 = @l2 36 @l12 91 
+%t16 59 = @l2 37 @l12 90 
+%t15 60 = @l2 38 @l12 89 
+%t11 61 = @l2 39 @l12 64 
+%t12 62 = @l2 40 @l12 63 
+@l5:
+@l7:
+@l8:
+@l10:
+@l11:
+@l12:
+%t36 94 = @l11 102 @l10 51 
+%t37 95 = @l11 101 @l10 52 
+%t30 96 = @l11 53 @l10 105 
+%t31 97 = @l11 54 @l10 104 
+%t33 98 = @l11 55 @l10 103 
+@l6:
+%t18 65 = @l4 28 @l7 113 
+%t20 66 = @l4 29 @l7 112 
+%t21 67 = @l4 30 @l7 111 
+%t25 68 = @l4 31 @l7 110 
+%t24 69 = @l4 32 @l7 109 
+%t23 70 = @l4 33 @l7 108 
+%t22 71 = @l4 34 @l7 107 
+%t19 72 = @l4 35 @l7 106 
+%t14 73 = @l4 58 @l7 91 
+%t16 74 = @l4 59 @l7 90 
+%t15 75 = @l4 60 @l7 89 
+@l13:
+@l14:
+%t52 85 = @l6 9 @l13 88 
+@l3:
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=0, stime=0, ptime=0, rtime=5, maxvsz=22167552, maxrss=4292608, nvcsw=1, nivcsw=2 }
+checker: { utime=2068, stime=348, ptime=2416, rtime=2441, maxvsz=11415552, maxrss=90734592, nvcsw=454, nivcsw=349 }
+
+====== Test #21 =======
+--- Input: size 1366 ---
+export function w $main(l %glo1) {
+@l0
+	%i =l alloc4 4
+	%a =l alloc4 4
+	%b =l alloc4 4
+	%c =l alloc4 4
+	%d =l alloc4 4
+	storew 1, %a
+@l1
+	%t3 =w loadw %a
+	%t2 =w csltw %t3, 1000
+	jnz %t2, @l2, @l3
+@l2
+	%t7 =w loadw %a
+	%t6 =w add %t7, 1
+	storew %t6, %b
+@l4
+	%t10 =w loadw %b
+	%t9 =w csltw %t10, 1000
+	jnz %t9, @l5, @l6
+@l5
+	%t15 =w loadw %a
+	%t16 =w loadw %a
+	%t14 =w mul %t15, %t16
+	%t18 =w loadw %b
+	%t19 =w loadw %b
+	%t17 =w mul %t18, %t19
+	%t13 =w add %t14, %t17
+	storew %t13, %d
+	storew 0, %i
+@l7
+	%t23 =w loadw %i
+	%t22 =w csltw %t23, 1000
+	jnz %t22, @l8, @l9
+@l8
+	%t27 =w loadw %i
+	%t28 =w loadw %i
+	%t26 =w mul %t27, %t28
+	%t29 =w loadw %d
+	%t25 =w ceqw %t26, %t29
+	jnz %t25, @l10, @l11
+@l10
+	%t31 =w loadw %i
+	storew %t31, %c
+	%t33 =w loadw %b
+	%t34 =w loadw %c
+	%t32 =w csltw %t33, %t34
+	jnz %t32, @l16, @l14
+@l16
+	%t38 =w loadw %a
+	%t39 =w loadw %b
+	%t37 =w add %t38, %t39
+	%t40 =w loadw %c
+	%t36 =w add %t37, %t40
+	%t35 =w ceqw %t36, 1000
+	jnz %t35, @l13, @l14
+@l13
+	%t46 =w loadw %a
+	%t47 =w loadw %b
+	%t45 =w mul %t46, %t47
+	%t48 =w loadw %c
+	%t44 =w mul %t45, %t48
+	%t42 =w call $printf(l %glo1, w %t44, ...)
+	ret 0
+@l14
+	jmp @l9
+@l11
+	%t51 =w loadw %i
+	%t50 =w add %t51, 1
+	storew %t50, %i
+	jmp @l7
+@l9
+	%t53 =w loadw %b
+	%t52 =w add %t53, 1
+	storew %t52, %b
+	jmp @l4
+@l6
+	%t55 =w loadw %a
+	%t54 =w add %t55, 1
+	storew %t54, %a
+	jmp @l1
+@l3
+	ret 0
+}
+
+--- Output: size 2570 ---
+@l0:
+@l1:
+%t54 7 = @l0 -1 @l6 80 
+%t55 8 = @l0 -1 @l6 79 
+%t52 9 = @l0 -1 @l6 47 
+%t53 10 = @l0 -1 @l6 48 
+%t50 11 = @l0 -1 @l6 49 
+%t51 12 = @l0 -1 @l6 50 
+%t35 13 = @l0 -1 @l6 51 
+%t36 14 = @l0 -1 @l6 52 
+%t40 15 = @l0 -1 @l6 53 
+%t37 16 = @l0 -1 @l6 54 
+%t39 17 = @l0 -1 @l6 55 
+%t38 18 = @l0 -1 @l6 56 
+%t32 19 = @l0 -1 @l6 57 
+%t34 20 = @l0 -1 @l6 58 
+%t33 21 = @l0 -1 @l6 59 
+%t31 22 = @l0 -1 @l6 60 
+%t25 23 = @l0 -1 @l6 61 
+%t29 24 = @l0 -1 @l6 62 
+%t26 25 = @l0 -1 @l6 63 
+%t28 26 = @l0 -1 @l6 64 
+%t27 27 = @l0 -1 @l6 65 
+%t22 28 = @l0 -1 @l6 66 
+%t23 29 = @l0 -1 @l6 67 
+%t13 30 = @l0 -1 @l6 68 
+%t17 31 = @l0 -1 @l6 69 
+%t19 32 = @l0 -1 @l6 70 
+%t18 33 = @l0 -1 @l6 71 
+%t14 34 = @l0 -1 @l6 72 
+%t16 35 = @l0 -1 @l6 73 
+%t15 36 = @l0 -1 @l6 74 
+%t9 37 = @l0 -1 @l6 78 
+%t10 38 = @l0 -1 @l6 77 
+%t6 39 = @l0 -1 @l6 46 
+%t7 40 = @l0 -1 @l6 45 
+%t2 41 = @l0 -1 @l6 44 
+%t3 42 = @l0 -1 @l6 43 
+@l2:
+@l4:
+%t52 47 = @l2 9 @l9 115 
+%t53 48 = @l2 10 @l9 114 
+%t50 49 = @l2 11 @l9 88 
+%t51 50 = @l2 12 @l9 89 
+%t35 51 = @l2 13 @l9 99 
+%t36 52 = @l2 14 @l9 100 
+%t40 53 = @l2 15 @l9 101 
+%t37 54 = @l2 16 @l9 102 
+%t39 55 = @l2 17 @l9 103 
+%t38 56 = @l2 18 @l9 104 
+%t32 57 = @l2 19 @l9 105 
+%t34 58 = @l2 20 @l9 106 
+%t33 59 = @l2 21 @l9 107 
+%t31 60 = @l2 22 @l9 108 
+%t25 61 = @l2 23 @l9 109 
+%t29 62 = @l2 24 @l9 110 
+%t26 63 = @l2 25 @l9 111 
+%t28 64 = @l2 26 @l9 112 
+%t27 65 = @l2 27 @l9 113 
+%t22 66 = @l2 28 @l9 98 
+%t23 67 = @l2 29 @l9 97 
+%t13 68 = @l2 30 @l9 87 
+%t17 69 = @l2 31 @l9 86 
+%t19 70 = @l2 32 @l9 85 
+%t18 71 = @l2 33 @l9 84 
+%t14 72 = @l2 34 @l9 83 
+%t16 73 = @l2 35 @l9 82 
+%t15 74 = @l2 36 @l9 81 
+%t9 75 = @l2 37 @l9 78 
+%t10 76 = @l2 38 @l9 77 
+@l5:
+@l7:
+%t50 88 = @l5 49 @l11 122 
+%t51 89 = @l5 50 @l11 121 
+%t25 90 = @l5 61 @l11 120 
+%t29 91 = @l5 62 @l11 119 
+%t26 92 = @l5 63 @l11 118 
+%t28 93 = @l5 64 @l11 117 
+%t27 94 = @l5 65 @l11 116 
+%t22 95 = @l5 66 @l11 98 
+%t23 96 = @l5 67 @l11 97 
+@l8:
+@l10:
+@l16:
+@l13:
+@l14:
+%t35 127 = @l10 51 @l16 138 
+%t36 128 = @l10 52 @l16 137 
+%t40 129 = @l10 53 @l16 136 
+%t37 130 = @l10 54 @l16 135 
+%t39 131 = @l10 55 @l16 134 
+%t38 132 = @l10 56 @l16 133 
+@l11:
+@l9:
+%t35 99 = @l7 51 @l14 127 
+%t36 100 = @l7 52 @l14 128 
+%t40 101 = @l7 53 @l14 129 
+%t37 102 = @l7 54 @l14 130 
+%t39 103 = @l7 55 @l14 131 
+%t38 104 = @l7 56 @l14 132 
+%t32 105 = @l7 57 @l14 126 
+%t34 106 = @l7 58 @l14 125 
+%t33 107 = @l7 59 @l14 124 
+%t31 108 = @l7 60 @l14 123 
+%t25 109 = @l7 90 @l14 120 
+%t29 110 = @l7 91 @l14 119 
+%t26 111 = @l7 92 @l14 118 
+%t28 112 = @l7 93 @l14 117 
+%t27 113 = @l7 94 @l14 116 
+@l6:
+@l3:
+
+--- Correct: size 2570 ---
+@l0:
+@l1:
+%t54 7 = @l0 -1 @l6 80 
+%t55 8 = @l0 -1 @l6 79 
+%t52 9 = @l0 -1 @l6 47 
+%t53 10 = @l0 -1 @l6 48 
+%t50 11 = @l0 -1 @l6 49 
+%t51 12 = @l0 -1 @l6 50 
+%t35 13 = @l0 -1 @l6 51 
+%t36 14 = @l0 -1 @l6 52 
+%t40 15 = @l0 -1 @l6 53 
+%t37 16 = @l0 -1 @l6 54 
+%t39 17 = @l0 -1 @l6 55 
+%t38 18 = @l0 -1 @l6 56 
+%t32 19 = @l0 -1 @l6 57 
+%t34 20 = @l0 -1 @l6 58 
+%t33 21 = @l0 -1 @l6 59 
+%t31 22 = @l0 -1 @l6 60 
+%t25 23 = @l0 -1 @l6 61 
+%t29 24 = @l0 -1 @l6 62 
+%t26 25 = @l0 -1 @l6 63 
+%t28 26 = @l0 -1 @l6 64 
+%t27 27 = @l0 -1 @l6 65 
+%t22 28 = @l0 -1 @l6 66 
+%t23 29 = @l0 -1 @l6 67 
+%t13 30 = @l0 -1 @l6 68 
+%t17 31 = @l0 -1 @l6 69 
+%t19 32 = @l0 -1 @l6 70 
+%t18 33 = @l0 -1 @l6 71 
+%t14 34 = @l0 -1 @l6 72 
+%t16 35 = @l0 -1 @l6 73 
+%t15 36 = @l0 -1 @l6 74 
+%t9 37 = @l0 -1 @l6 78 
+%t10 38 = @l0 -1 @l6 77 
+%t6 39 = @l0 -1 @l6 46 
+%t7 40 = @l0 -1 @l6 45 
+%t2 41 = @l0 -1 @l6 44 
+%t3 42 = @l0 -1 @l6 43 
+@l2:
+@l4:
+%t52 47 = @l2 9 @l9 115 
+%t53 48 = @l2 10 @l9 114 
+%t50 49 = @l2 11 @l9 88 
+%t51 50 = @l2 12 @l9 89 
+%t35 51 = @l2 13 @l9 99 
+%t36 52 = @l2 14 @l9 100 
+%t40 53 = @l2 15 @l9 101 
+%t37 54 = @l2 16 @l9 102 
+%t39 55 = @l2 17 @l9 103 
+%t38 56 = @l2 18 @l9 104 
+%t32 57 = @l2 19 @l9 105 
+%t34 58 = @l2 20 @l9 106 
+%t33 59 = @l2 21 @l9 107 
+%t31 60 = @l2 22 @l9 108 
+%t25 61 = @l2 23 @l9 109 
+%t29 62 = @l2 24 @l9 110 
+%t26 63 = @l2 25 @l9 111 
+%t28 64 = @l2 26 @l9 112 
+%t27 65 = @l2 27 @l9 113 
+%t22 66 = @l2 28 @l9 98 
+%t23 67 = @l2 29 @l9 97 
+%t13 68 = @l2 30 @l9 87 
+%t17 69 = @l2 31 @l9 86 
+%t19 70 = @l2 32 @l9 85 
+%t18 71 = @l2 33 @l9 84 
+%t14 72 = @l2 34 @l9 83 
+%t16 73 = @l2 35 @l9 82 
+%t15 74 = @l2 36 @l9 81 
+%t9 75 = @l2 37 @l9 78 
+%t10 76 = @l2 38 @l9 77 
+@l5:
+@l7:
+%t50 88 = @l5 49 @l11 122 
+%t51 89 = @l5 50 @l11 121 
+%t25 90 = @l5 61 @l11 120 
+%t29 91 = @l5 62 @l11 119 
+%t26 92 = @l5 63 @l11 118 
+%t28 93 = @l5 64 @l11 117 
+%t27 94 = @l5 65 @l11 116 
+%t22 95 = @l5 66 @l11 98 
+%t23 96 = @l5 67 @l11 97 
+@l8:
+@l10:
+@l16:
+@l13:
+@l14:
+%t35 127 = @l10 51 @l16 138 
+%t36 128 = @l10 52 @l16 137 
+%t40 129 = @l10 53 @l16 136 
+%t37 130 = @l10 54 @l16 135 
+%t39 131 = @l10 55 @l16 134 
+%t38 132 = @l10 56 @l16 133 
+@l11:
+@l9:
+%t35 99 = @l7 51 @l14 127 
+%t36 100 = @l7 52 @l14 128 
+%t40 101 = @l7 53 @l14 129 
+%t37 102 = @l7 54 @l14 130 
+%t39 103 = @l7 55 @l14 131 
+%t38 104 = @l7 56 @l14 132 
+%t32 105 = @l7 57 @l14 126 
+%t34 106 = @l7 58 @l14 125 
+%t33 107 = @l7 59 @l14 124 
+%t31 108 = @l7 60 @l14 123 
+%t25 109 = @l7 90 @l14 120 
+%t29 110 = @l7 91 @l14 119 
+%t26 111 = @l7 92 @l14 118 
+%t28 112 = @l7 93 @l14 117 
+%t27 113 = @l7 94 @l14 116 
+@l6:
+@l3:
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=4, stime=0, ptime=4, rtime=6, maxvsz=22167552, maxrss=4341760, nvcsw=1, nivcsw=3 }
+checker: { utime=2088, stime=340, ptime=2428, rtime=2427, maxvsz=11415552, maxrss=90763264, nvcsw=379, nivcsw=60 }
+
+====== Test #22 =======
+--- Input: size 751 ---
+export function w $board(l %glo1, l %glo2, l %glo3) {
+@l0
+	%x =l alloc4 4
+	%y =l alloc4 4
+	%b =l alloc8 8
+	storew 0, %y
+@l1
+	%t3 =w loadw %y
+	%t2 =w csltw %t3, 8
+	jnz %t2, @l2, @l3
+@l2
+	storew 0, %x
+@l4
+	%t8 =w loadw %x
+	%t7 =w csltw %t8, 8
+	jnz %t7, @l5, @l6
+@l5
+	%t16 =l loadl %b
+	%t17 =w loadw %x
+	%t18 =l extsw %t17
+	%t19 =l mul 8, %t18
+	%t15 =l add %t16, %t19
+	%t14 =l loadl %t15
+	%t20 =w loadw %y
+	%t21 =l extsw %t20
+	%t22 =l mul 4, %t21
+	%t13 =l add %t14, %t22
+	%t12 =w loadw %t13
+	%t10 =w call $printf(l %glo1, w %t12, ...)
+	%t24 =w loadw %x
+	%t23 =w add %t24, 1
+	storew %t23, %x
+	jmp @l4
+@l6
+	%t25 =w call $printf(l %glo2, ...)
+	%t28 =w loadw %y
+	%t27 =w add %t28, 1
+	storew %t27, %y
+	jmp @l1
+@l3
+	%t29 =w call $printf(l %glo3, ...)
+	ret 0
+}
+
+--- Output: size 951 ---
+@l0:
+@l1:
+%t27 7 = @l0 -1 @l6 51 
+%t28 8 = @l0 -1 @l6 50 
+%t25 9 = @l0 -1 @l6 49 
+%t23 10 = @l0 -1 @l6 31 
+%t24 11 = @l0 -1 @l6 32 
+%t10 12 = @l0 -1 @l6 33 
+%t12 13 = @l0 -1 @l6 34 
+%t13 14 = @l0 -1 @l6 35 
+%t22 15 = @l0 -1 @l6 36 
+%t21 16 = @l0 -1 @l6 37 
+%t20 17 = @l0 -1 @l6 38 
+%t14 18 = @l0 -1 @l6 39 
+%t15 19 = @l0 -1 @l6 40 
+%t19 20 = @l0 -1 @l6 41 
+%t18 21 = @l0 -1 @l6 42 
+%t17 22 = @l0 -1 @l6 43 
+%t16 23 = @l0 -1 @l6 44 
+%t7 24 = @l0 -1 @l6 48 
+%t8 25 = @l0 -1 @l6 47 
+%t2 26 = @l0 -1 @l6 29 
+%t3 27 = @l0 -1 @l6 28 
+@l2:
+@l4:
+%t23 31 = @l2 10 @l5 65 
+%t24 32 = @l2 11 @l5 64 
+%t10 33 = @l2 12 @l5 63 
+%t12 34 = @l2 13 @l5 62 
+%t13 35 = @l2 14 @l5 61 
+%t22 36 = @l2 15 @l5 60 
+%t21 37 = @l2 16 @l5 59 
+%t20 38 = @l2 17 @l5 58 
+%t14 39 = @l2 18 @l5 57 
+%t15 40 = @l2 19 @l5 56 
+%t19 41 = @l2 20 @l5 55 
+%t18 42 = @l2 21 @l5 54 
+%t17 43 = @l2 22 @l5 53 
+%t16 44 = @l2 23 @l5 52 
+%t7 45 = @l2 24 @l5 48 
+%t8 46 = @l2 25 @l5 47 
+@l5:
+@l6:
+@l3:
+
+--- Correct: size 951 ---
+@l0:
+@l1:
+%t27 7 = @l0 -1 @l6 51 
+%t28 8 = @l0 -1 @l6 50 
+%t25 9 = @l0 -1 @l6 49 
+%t23 10 = @l0 -1 @l6 31 
+%t24 11 = @l0 -1 @l6 32 
+%t10 12 = @l0 -1 @l6 33 
+%t12 13 = @l0 -1 @l6 34 
+%t13 14 = @l0 -1 @l6 35 
+%t22 15 = @l0 -1 @l6 36 
+%t21 16 = @l0 -1 @l6 37 
+%t20 17 = @l0 -1 @l6 38 
+%t14 18 = @l0 -1 @l6 39 
+%t15 19 = @l0 -1 @l6 40 
+%t19 20 = @l0 -1 @l6 41 
+%t18 21 = @l0 -1 @l6 42 
+%t17 22 = @l0 -1 @l6 43 
+%t16 23 = @l0 -1 @l6 44 
+%t7 24 = @l0 -1 @l6 48 
+%t8 25 = @l0 -1 @l6 47 
+%t2 26 = @l0 -1 @l6 29 
+%t3 27 = @l0 -1 @l6 28 
+@l2:
+@l4:
+%t23 31 = @l2 10 @l5 65 
+%t24 32 = @l2 11 @l5 64 
+%t10 33 = @l2 12 @l5 63 
+%t12 34 = @l2 13 @l5 62 
+%t13 35 = @l2 14 @l5 61 
+%t22 36 = @l2 15 @l5 60 
+%t21 37 = @l2 16 @l5 59 
+%t20 38 = @l2 17 @l5 58 
+%t14 39 = @l2 18 @l5 57 
+%t15 40 = @l2 19 @l5 56 
+%t19 41 = @l2 20 @l5 55 
+%t18 42 = @l2 21 @l5 54 
+%t17 43 = @l2 22 @l5 53 
+%t16 44 = @l2 23 @l5 52 
+%t7 45 = @l2 24 @l5 48 
+%t8 46 = @l2 25 @l5 47 
+@l5:
+@l6:
+@l3:
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=4, stime=0, ptime=4, rtime=8, maxvsz=0, maxrss=4288512, nvcsw=1, nivcsw=2 }
+checker: { utime=2092, stime=464, ptime=2556, rtime=2573, maxvsz=11415552, maxrss=90710016, nvcsw=490, nivcsw=263 }
+
+====== Test #23 =======
+--- Input: size 641 ---
+export function w $chk(w %t0, w %t1) {
+@l0
+	%x =l alloc4 4
+	storew %t0, %x
+	%y =l alloc4 4
+	storew %t1, %y
+	%b =l alloc8 8
+	%t3 =w loadw %x
+	%t2 =w csltw %t3, 0
+	jnz %t2, @l1, @l6
+@l6
+	%t7 =w loadw %x
+	%t5 =w csltw 7, %t7
+	jnz %t5, @l1, @l5
+@l5
+	%t9 =w loadw %y
+	%t8 =w csltw %t9, 0
+	jnz %t8, @l1, @l4
+@l4
+	%t13 =w loadw %y
+	%t11 =w csltw 7, %t13
+	jnz %t11, @l1, @l2
+@l1
+	ret 0
+@l2
+	%t20 =l loadl %b
+	%t21 =w loadw %x
+	%t22 =l extsw %t21
+	%t23 =l mul 8, %t22
+	%t19 =l add %t20, %t23
+	%t18 =l loadl %t19
+	%t24 =w loadw %y
+	%t25 =l extsw %t24
+	%t26 =l mul 4, %t25
+	%t17 =l add %t18, %t26
+	%t16 =w loadw %t17
+	%t15 =w ceqw %t16, 0
+	ret %t15
+}
+
+
+--- Output: size 258 ---
+@l0:
+@l6:
+@l5:
+@l4:
+@l1:
+%t11 8 = @l0 -1 @l6 -1 @l5 -1 @l4 19 
+%t13 9 = @l0 -1 @l6 -1 @l5 -1 @l4 18 
+%t8 10 = @l0 -1 @l6 -1 @l5 17 @l4 17 
+%t9 11 = @l0 -1 @l6 -1 @l5 16 @l4 16 
+%t5 12 = @l0 -1 @l6 15 @l5 15 @l4 15 
+%t7 13 = @l0 -1 @l6 14 @l5 14 @l4 14 
+@l2:
+
+--- Correct: size 258 ---
+@l0:
+@l6:
+@l5:
+@l4:
+@l1:
+%t11 8 = @l0 -1 @l6 -1 @l5 -1 @l4 19 
+%t13 9 = @l0 -1 @l6 -1 @l5 -1 @l4 18 
+%t8 10 = @l0 -1 @l6 -1 @l5 17 @l4 17 
+%t9 11 = @l0 -1 @l6 -1 @l5 16 @l4 16 
+%t5 12 = @l0 -1 @l6 15 @l5 15 @l4 15 
+%t7 13 = @l0 -1 @l6 14 @l5 14 @l4 14 
+@l2:
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=4, stime=0, ptime=4, rtime=6, maxvsz=0, maxrss=4378624, nvcsw=1, nivcsw=1 }
+checker: { utime=2280, stime=388, ptime=2668, rtime=2692, maxvsz=11415552, maxrss=90710016, nvcsw=451, nivcsw=347 }
+
+====== Test #24 =======
+--- Input: size 2185 ---
+export function w $go(w %t0, w %t1, w %t2) {
+@l0
+	%k =l alloc4 4
+	storew %t0, %k
+	%x =l alloc4 4
+	storew %t1, %x
+	%y =l alloc4 4
+	storew %t2, %y
+	%i =l alloc4 4
+	%j =l alloc4 4
+	%b =l alloc8 8
+	%N =l alloc4 4
+	%t4 =w loadw %k
+	%t8 =l loadl %b
+	%t9 =w loadw %x
+	%t10 =l extsw %t9
+	%t11 =l mul 8, %t10
+	%t7 =l add %t8, %t11
+	%t6 =l loadl %t7
+	%t12 =w loadw %y
+	%t13 =l extsw %t12
+	%t14 =l mul 4, %t13
+	%t5 =l add %t6, %t14
+	storew %t4, %t5
+	%t16 =w loadw %k
+	%t15 =w ceqw %t16, 64
+	jnz %t15, @l1, @l2
+@l1
+	%t19 =w loadw %x
+	%t18 =w cnew %t19, 2
+	jnz %t18, @l8, @l5
+@l8
+	%t22 =w loadw %y
+	%t21 =w cnew %t22, 0
+	jnz %t21, @l7, @l5
+@l7
+	%t28 =w loadw %x
+	%t27 =w sub %t28, 2
+	%t26 =w call $abs(w %t27, ...)
+	%t31 =w loadw %y
+	%t30 =w call $abs(w %t31, ...)
+	%t25 =w add %t26, %t30
+	%t24 =w ceqw %t25, 3
+	jnz %t24, @l4, @l5
+@l4
+	%t33 =w call $board(...)
+	%t35 =w loadw %N
+	%t34 =w add %t35, 1
+	storew %t34, %N
+	%t37 =w loadw %N
+	%t36 =w ceqw %t37, 10
+	jnz %t36, @l9, @l10
+@l9
+	%t39 =w call $exit(w 0, ...)
+@l10
+@l5
+	jmp @l3
+@l2
+	%t42 =w sub 0, 2
+	storew %t42, %i
+@l12
+	%t46 =w loadw %i
+	%t45 =w cslew %t46, 2
+	jnz %t45, @l13, @l14
+@l13
+	%t49 =w sub 0, 2
+	storew %t49, %j
+@l15
+	%t53 =w loadw %j
+	%t52 =w cslew %t53, 2
+	jnz %t52, @l16, @l17
+@l16
+	%t58 =w loadw %i
+	%t57 =w call $abs(w %t58, ...)
+	%t60 =w loadw %j
+	%t59 =w call $abs(w %t60, ...)
+	%t56 =w add %t57, %t59
+	%t55 =w ceqw %t56, 3
+	jnz %t55, @l21, @l19
+@l21
+	%t64 =w loadw %x
+	%t65 =w loadw %i
+	%t63 =w add %t64, %t65
+	%t67 =w loadw %y
+	%t68 =w loadw %j
+	%t66 =w add %t67, %t68
+	%t62 =w call $chk(w %t63, w %t66, ...)
+	jnz %t62, @l18, @l19
+@l18
+	%t71 =w loadw %k
+	%t70 =w add %t71, 1
+	%t74 =w loadw %x
+	%t75 =w loadw %i
+	%t73 =w add %t74, %t75
+	%t77 =w loadw %y
+	%t78 =w loadw %j
+	%t76 =w add %t77, %t78
+	%t69 =w call $go(w %t70, w %t73, w %t76, ...)
+@l19
+	%t80 =w loadw %j
+	%t79 =w add %t80, 1
+	storew %t79, %j
+	jmp @l15
+@l17
+	%t82 =w loadw %i
+	%t81 =w add %t82, 1
+	storew %t81, %i
+	jmp @l12
+@l14
+@l3
+	%t88 =l loadl %b
+	%t89 =w loadw %x
+	%t90 =l extsw %t89
+	%t91 =l mul 8, %t90
+	%t87 =l add %t88, %t91
+	%t86 =l loadl %t87
+	%t92 =w loadw %y
+	%t93 =l extsw %t92
+	%t94 =l mul 4, %t93
+	%t85 =l add %t86, %t94
+	storew 0, %t85
+	ret 0
+}
+
+
+--- Output: size 4320 ---
+@l0:
+@l1:
+@l8:
+@l7:
+@l4:
+@l9:
+@l10:
+%t39 219 = @l4 -1 @l9 220 
+@l5:
+%t39 190 = @l1 -1 @l8 -1 @l7 -1 @l10 219 
+%t36 191 = @l1 -1 @l8 -1 @l7 -1 @l10 218 
+%t37 192 = @l1 -1 @l8 -1 @l7 -1 @l10 217 
+%t34 193 = @l1 -1 @l8 -1 @l7 -1 @l10 216 
+%t35 194 = @l1 -1 @l8 -1 @l7 -1 @l10 215 
+%t33 195 = @l1 -1 @l8 -1 @l7 -1 @l10 214 
+%t24 196 = @l1 -1 @l8 -1 @l7 213 @l10 213 
+%t25 197 = @l1 -1 @l8 -1 @l7 212 @l10 212 
+%t30 198 = @l1 -1 @l8 -1 @l7 211 @l10 211 
+%t31 199 = @l1 -1 @l8 -1 @l7 210 @l10 210 
+%t26 200 = @l1 -1 @l8 -1 @l7 209 @l10 209 
+%t27 201 = @l1 -1 @l8 -1 @l7 208 @l10 208 
+%t28 202 = @l1 -1 @l8 -1 @l7 207 @l10 207 
+%t21 203 = @l1 -1 @l8 206 @l7 206 @l10 206 
+%t22 204 = @l1 -1 @l8 205 @l7 205 @l10 205 
+@l2:
+@l12:
+%t81 84 = @l2 -1 @l17 147 
+%t82 85 = @l2 -1 @l17 146 
+%t79 86 = @l2 -1 @l17 118 
+%t80 87 = @l2 -1 @l17 119 
+%t69 88 = @l2 -1 @l17 120 
+%t76 89 = @l2 -1 @l17 121 
+%t78 90 = @l2 -1 @l17 122 
+%t77 91 = @l2 -1 @l17 123 
+%t73 92 = @l2 -1 @l17 124 
+%t75 93 = @l2 -1 @l17 125 
+%t74 94 = @l2 -1 @l17 126 
+%t70 95 = @l2 -1 @l17 127 
+%t71 96 = @l2 -1 @l17 128 
+%t62 97 = @l2 -1 @l17 129 
+%t66 98 = @l2 -1 @l17 130 
+%t68 99 = @l2 -1 @l17 131 
+%t67 100 = @l2 -1 @l17 132 
+%t63 101 = @l2 -1 @l17 133 
+%t65 102 = @l2 -1 @l17 134 
+%t64 103 = @l2 -1 @l17 135 
+%t55 104 = @l2 -1 @l17 136 
+%t56 105 = @l2 -1 @l17 137 
+%t59 106 = @l2 -1 @l17 138 
+%t60 107 = @l2 -1 @l17 139 
+%t57 108 = @l2 -1 @l17 140 
+%t58 109 = @l2 -1 @l17 141 
+%t52 110 = @l2 -1 @l17 145 
+%t53 111 = @l2 -1 @l17 144 
+%t49 112 = @l2 -1 @l17 117 
+%t45 113 = @l2 -1 @l17 116 
+%t46 114 = @l2 -1 @l17 115 
+@l13:
+@l15:
+%t79 118 = @l13 86 @l19 171 
+%t80 119 = @l13 87 @l19 170 
+%t69 120 = @l13 88 @l19 154 
+%t76 121 = @l13 89 @l19 155 
+%t78 122 = @l13 90 @l19 156 
+%t77 123 = @l13 91 @l19 157 
+%t73 124 = @l13 92 @l19 158 
+%t75 125 = @l13 93 @l19 159 
+%t74 126 = @l13 94 @l19 160 
+%t70 127 = @l13 95 @l19 161 
+%t71 128 = @l13 96 @l19 162 
+%t62 129 = @l13 97 @l19 163 
+%t66 130 = @l13 98 @l19 164 
+%t68 131 = @l13 99 @l19 165 
+%t67 132 = @l13 100 @l19 166 
+%t63 133 = @l13 101 @l19 167 
+%t65 134 = @l13 102 @l19 168 
+%t64 135 = @l13 103 @l19 169 
+%t55 136 = @l13 104 @l19 153 
+%t56 137 = @l13 105 @l19 152 
+%t59 138 = @l13 106 @l19 151 
+%t60 139 = @l13 107 @l19 150 
+%t57 140 = @l13 108 @l19 149 
+%t58 141 = @l13 109 @l19 148 
+%t52 142 = @l13 110 @l19 145 
+%t53 143 = @l13 111 @l19 144 
+@l16:
+@l21:
+@l18:
+@l19:
+%t69 154 = @l16 120 @l21 120 @l18 187 
+%t76 155 = @l16 121 @l21 121 @l18 186 
+%t78 156 = @l16 122 @l21 122 @l18 185 
+%t77 157 = @l16 123 @l21 123 @l18 184 
+%t73 158 = @l16 124 @l21 124 @l18 183 
+%t75 159 = @l16 125 @l21 125 @l18 182 
+%t74 160 = @l16 126 @l21 126 @l18 181 
+%t70 161 = @l16 127 @l21 127 @l18 180 
+%t71 162 = @l16 128 @l21 128 @l18 179 
+%t62 163 = @l16 129 @l21 178 @l18 178 
+%t66 164 = @l16 130 @l21 177 @l18 177 
+%t68 165 = @l16 131 @l21 176 @l18 176 
+%t67 166 = @l16 132 @l21 175 @l18 175 
+%t63 167 = @l16 133 @l21 174 @l18 174 
+%t65 168 = @l16 134 @l21 173 @l18 173 
+%t64 169 = @l16 135 @l21 172 @l18 172 
+@l17:
+@l14:
+@l3:
+%t81 24 = @l14 84 @l5 -1 
+%t82 25 = @l14 85 @l5 -1 
+%t79 26 = @l14 86 @l5 -1 
+%t80 27 = @l14 87 @l5 -1 
+%t69 28 = @l14 88 @l5 -1 
+%t76 29 = @l14 89 @l5 -1 
+%t78 30 = @l14 90 @l5 -1 
+%t77 31 = @l14 91 @l5 -1 
+%t73 32 = @l14 92 @l5 -1 
+%t75 33 = @l14 93 @l5 -1 
+%t74 34 = @l14 94 @l5 -1 
+%t70 35 = @l14 95 @l5 -1 
+%t71 36 = @l14 96 @l5 -1 
+%t62 37 = @l14 97 @l5 -1 
+%t66 38 = @l14 98 @l5 -1 
+%t68 39 = @l14 99 @l5 -1 
+%t67 40 = @l14 100 @l5 -1 
+%t63 41 = @l14 101 @l5 -1 
+%t65 42 = @l14 102 @l5 -1 
+%t64 43 = @l14 103 @l5 -1 
+%t55 44 = @l14 104 @l5 -1 
+%t56 45 = @l14 105 @l5 -1 
+%t59 46 = @l14 106 @l5 -1 
+%t60 47 = @l14 107 @l5 -1 
+%t57 48 = @l14 108 @l5 -1 
+%t58 49 = @l14 109 @l5 -1 
+%t52 50 = @l14 110 @l5 -1 
+%t53 51 = @l14 111 @l5 -1 
+%t49 52 = @l14 112 @l5 -1 
+%t45 53 = @l14 116 @l5 -1 
+%t46 54 = @l14 115 @l5 -1 
+%t42 55 = @l14 83 @l5 -1 
+%t39 56 = @l14 -1 @l5 190 
+%t36 57 = @l14 -1 @l5 191 
+%t37 58 = @l14 -1 @l5 192 
+%t34 59 = @l14 -1 @l5 193 
+%t35 60 = @l14 -1 @l5 194 
+%t33 61 = @l14 -1 @l5 195 
+%t24 62 = @l14 -1 @l5 196 
+%t25 63 = @l14 -1 @l5 197 
+%t30 64 = @l14 -1 @l5 198 
+%t31 65 = @l14 -1 @l5 199 
+%t26 66 = @l14 -1 @l5 200 
+%t27 67 = @l14 -1 @l5 201 
+%t28 68 = @l14 -1 @l5 202 
+%t21 69 = @l14 -1 @l5 203 
+%t22 70 = @l14 -1 @l5 204 
+%t18 71 = @l14 -1 @l5 189 
+%t19 72 = @l14 -1 @l5 188
+
+--- Correct: size 4321 ---
+@l0:
+@l1:
+@l8:
+@l7:
+@l4:
+@l9:
+@l10:
+%t39 219 = @l4 -1 @l9 220 
+@l5:
+%t39 190 = @l1 -1 @l8 -1 @l7 -1 @l10 219 
+%t36 191 = @l1 -1 @l8 -1 @l7 -1 @l10 218 
+%t37 192 = @l1 -1 @l8 -1 @l7 -1 @l10 217 
+%t34 193 = @l1 -1 @l8 -1 @l7 -1 @l10 216 
+%t35 194 = @l1 -1 @l8 -1 @l7 -1 @l10 215 
+%t33 195 = @l1 -1 @l8 -1 @l7 -1 @l10 214 
+%t24 196 = @l1 -1 @l8 -1 @l7 213 @l10 213 
+%t25 197 = @l1 -1 @l8 -1 @l7 212 @l10 212 
+%t30 198 = @l1 -1 @l8 -1 @l7 211 @l10 211 
+%t31 199 = @l1 -1 @l8 -1 @l7 210 @l10 210 
+%t26 200 = @l1 -1 @l8 -1 @l7 209 @l10 209 
+%t27 201 = @l1 -1 @l8 -1 @l7 208 @l10 208 
+%t28 202 = @l1 -1 @l8 -1 @l7 207 @l10 207 
+%t21 203 = @l1 -1 @l8 206 @l7 206 @l10 206 
+%t22 204 = @l1 -1 @l8 205 @l7 205 @l10 205 
+@l2:
+@l12:
+%t81 84 = @l2 -1 @l17 147 
+%t82 85 = @l2 -1 @l17 146 
+%t79 86 = @l2 -1 @l17 118 
+%t80 87 = @l2 -1 @l17 119 
+%t69 88 = @l2 -1 @l17 120 
+%t76 89 = @l2 -1 @l17 121 
+%t78 90 = @l2 -1 @l17 122 
+%t77 91 = @l2 -1 @l17 123 
+%t73 92 = @l2 -1 @l17 124 
+%t75 93 = @l2 -1 @l17 125 
+%t74 94 = @l2 -1 @l17 126 
+%t70 95 = @l2 -1 @l17 127 
+%t71 96 = @l2 -1 @l17 128 
+%t62 97 = @l2 -1 @l17 129 
+%t66 98 = @l2 -1 @l17 130 
+%t68 99 = @l2 -1 @l17 131 
+%t67 100 = @l2 -1 @l17 132 
+%t63 101 = @l2 -1 @l17 133 
+%t65 102 = @l2 -1 @l17 134 
+%t64 103 = @l2 -1 @l17 135 
+%t55 104 = @l2 -1 @l17 136 
+%t56 105 = @l2 -1 @l17 137 
+%t59 106 = @l2 -1 @l17 138 
+%t60 107 = @l2 -1 @l17 139 
+%t57 108 = @l2 -1 @l17 140 
+%t58 109 = @l2 -1 @l17 141 
+%t52 110 = @l2 -1 @l17 145 
+%t53 111 = @l2 -1 @l17 144 
+%t49 112 = @l2 -1 @l17 117 
+%t45 113 = @l2 -1 @l17 116 
+%t46 114 = @l2 -1 @l17 115 
+@l13:
+@l15:
+%t79 118 = @l13 86 @l19 171 
+%t80 119 = @l13 87 @l19 170 
+%t69 120 = @l13 88 @l19 154 
+%t76 121 = @l13 89 @l19 155 
+%t78 122 = @l13 90 @l19 156 
+%t77 123 = @l13 91 @l19 157 
+%t73 124 = @l13 92 @l19 158 
+%t75 125 = @l13 93 @l19 159 
+%t74 126 = @l13 94 @l19 160 
+%t70 127 = @l13 95 @l19 161 
+%t71 128 = @l13 96 @l19 162 
+%t62 129 = @l13 97 @l19 163 
+%t66 130 = @l13 98 @l19 164 
+%t68 131 = @l13 99 @l19 165 
+%t67 132 = @l13 100 @l19 166 
+%t63 133 = @l13 101 @l19 167 
+%t65 134 = @l13 102 @l19 168 
+%t64 135 = @l13 103 @l19 169 
+%t55 136 = @l13 104 @l19 153 
+%t56 137 = @l13 105 @l19 152 
+%t59 138 = @l13 106 @l19 151 
+%t60 139 = @l13 107 @l19 150 
+%t57 140 = @l13 108 @l19 149 
+%t58 141 = @l13 109 @l19 148 
+%t52 142 = @l13 110 @l19 145 
+%t53 143 = @l13 111 @l19 144 
+@l16:
+@l21:
+@l18:
+@l19:
+%t69 154 = @l16 120 @l21 120 @l18 187 
+%t76 155 = @l16 121 @l21 121 @l18 186 
+%t78 156 = @l16 122 @l21 122 @l18 185 
+%t77 157 = @l16 123 @l21 123 @l18 184 
+%t73 158 = @l16 124 @l21 124 @l18 183 
+%t75 159 = @l16 125 @l21 125 @l18 182 
+%t74 160 = @l16 126 @l21 126 @l18 181 
+%t70 161 = @l16 127 @l21 127 @l18 180 
+%t71 162 = @l16 128 @l21 128 @l18 179 
+%t62 163 = @l16 129 @l21 178 @l18 178 
+%t66 164 = @l16 130 @l21 177 @l18 177 
+%t68 165 = @l16 131 @l21 176 @l18 176 
+%t67 166 = @l16 132 @l21 175 @l18 175 
+%t63 167 = @l16 133 @l21 174 @l18 174 
+%t65 168 = @l16 134 @l21 173 @l18 173 
+%t64 169 = @l16 135 @l21 172 @l18 172 
+@l17:
+@l14:
+@l3:
+%t81 24 = @l14 84 @l5 -1 
+%t82 25 = @l14 85 @l5 -1 
+%t79 26 = @l14 86 @l5 -1 
+%t80 27 = @l14 87 @l5 -1 
+%t69 28 = @l14 88 @l5 -1 
+%t76 29 = @l14 89 @l5 -1 
+%t78 30 = @l14 90 @l5 -1 
+%t77 31 = @l14 91 @l5 -1 
+%t73 32 = @l14 92 @l5 -1 
+%t75 33 = @l14 93 @l5 -1 
+%t74 34 = @l14 94 @l5 -1 
+%t70 35 = @l14 95 @l5 -1 
+%t71 36 = @l14 96 @l5 -1 
+%t62 37 = @l14 97 @l5 -1 
+%t66 38 = @l14 98 @l5 -1 
+%t68 39 = @l14 99 @l5 -1 
+%t67 40 = @l14 100 @l5 -1 
+%t63 41 = @l14 101 @l5 -1 
+%t65 42 = @l14 102 @l5 -1 
+%t64 43 = @l14 103 @l5 -1 
+%t55 44 = @l14 104 @l5 -1 
+%t56 45 = @l14 105 @l5 -1 
+%t59 46 = @l14 106 @l5 -1 
+%t60 47 = @l14 107 @l5 -1 
+%t57 48 = @l14 108 @l5 -1 
+%t58 49 = @l14 109 @l5 -1 
+%t52 50 = @l14 110 @l5 -1 
+%t53 51 = @l14 111 @l5 -1 
+%t49 52 = @l14 112 @l5 -1 
+%t45 53 = @l14 116 @l5 -1 
+%t46 54 = @l14 115 @l5 -1 
+%t42 55 = @l14 83 @l5 -1 
+%t39 56 = @l14 -1 @l5 190 
+%t36 57 = @l14 -1 @l5 191 
+%t37 58 = @l14 -1 @l5 192 
+%t34 59 = @l14 -1 @l5 193 
+%t35 60 = @l14 -1 @l5 194 
+%t33 61 = @l14 -1 @l5 195 
+%t24 62 = @l14 -1 @l5 196 
+%t25 63 = @l14 -1 @l5 197 
+%t30 64 = @l14 -1 @l5 198 
+%t31 65 = @l14 -1 @l5 199 
+%t26 66 = @l14 -1 @l5 200 
+%t27 67 = @l14 -1 @l5 201 
+%t28 68 = @l14 -1 @l5 202 
+%t21 69 = @l14 -1 @l5 203 
+%t22 70 = @l14 -1 @l5 204 
+%t18 71 = @l14 -1 @l5 189 
+%t19 72 = @l14 -1 @l5 188 
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=0, stime=4, ptime=4, rtime=8, maxvsz=0, maxrss=4489216, nvcsw=1, nivcsw=2 }
+checker: { utime=1976, stime=456, ptime=2432, rtime=2456, maxvsz=11415552, maxrss=90619904, nvcsw=436, nivcsw=296 }
+
+====== Test #25 =======
+--- Input: size 399 ---
+export function w $main(l %glo1) {
+@l0
+	%i =l alloc4 4
+	%b =l alloc8 8
+	%t0 =w call $printf(l %glo1, ...)
+	storew 0, %i
+@l1
+	%t5 =w loadw %i
+	%t4 =w csltw %t5, 8
+	jnz %t4, @l2, @l3
+@l2
+	%t8 =w mul 8, 4
+	%t12 =l loadl %b
+	%t13 =w loadw %i
+	%t14 =l extsw %t13
+	%t15 =l mul 4, %t14
+	%t11 =l add %t12, %t15
+	storew %t8, %t11
+	%t17 =w loadw %i
+	%t16 =w add %t17, 1
+	storew %t16, %i
+	jmp @l1
+@l3
+	ret 0
+}
+
+--- Output: size 262 ---
+@l0:
+@l1:
+%t16 5 = @l0 -1 @l2 24 
+%t17 6 = @l0 -1 @l2 23 
+%t11 7 = @l0 -1 @l2 22 
+%t15 8 = @l0 -1 @l2 21 
+%t14 9 = @l0 -1 @l2 20 
+%t13 10 = @l0 -1 @l2 19 
+%t12 11 = @l0 -1 @l2 18 
+%t8 12 = @l0 -1 @l2 17 
+%t4 13 = @l0 -1 @l2 16 
+%t5 14 = @l0 -1 @l2 15 
+@l2:
+@l3:
+
+--- Correct: size 262 ---
+@l0:
+@l1:
+%t16 5 = @l0 -1 @l2 24 
+%t17 6 = @l0 -1 @l2 23 
+%t11 7 = @l0 -1 @l2 22 
+%t15 8 = @l0 -1 @l2 21 
+%t14 9 = @l0 -1 @l2 20 
+%t13 10 = @l0 -1 @l2 19 
+%t12 11 = @l0 -1 @l2 18 
+%t8 12 = @l0 -1 @l2 17 
+%t4 13 = @l0 -1 @l2 16 
+%t5 14 = @l0 -1 @l2 15 
+@l2:
+@l3:
+
+--- Stderr: size 0 ---
+
+--- Checker output: size 0 ---
+
+--- Resource usage ---
+program: { utime=0, stime=0, ptime=0, rtime=4, maxvsz=0, maxrss=4513792, nvcsw=1, nivcsw=1 }
+checker: { utime=1772, stime=412, ptime=2184, rtime=2203, maxvsz=11415552, maxrss=90722304, nvcsw=357, nivcsw=263 }
+
+====== Test #26 =======
+--- Input: size 383 ---
+export function w $f(w %n, w %m) {
+@start
+        %a =w mul %n, %m
+        %b =w sub %n, %m
+        %cmp1 =w csgtw %n, 0
+	jnz %cmp1, @np, @nn
+
+@np
+        %cmp2 =w csgtw %m, 0
+	jnz %cmp2, @positive, @np_mn
+
+@positive
+        %a =w add %a, 4
+        jmp @ret
+
+@np_mn
+        %a =w add %a, %b
+        jmp @ret
+
+@nn
+        %n =w add %n, %b
+        jmp @positive
+
+@ret
+        ret %a
+}
+
+--- Output: size 185 ---
+@start:
+@np:
+@positive:
+%cmp2 10 = @nn -1 @np 13 
+%n 11 = @nn 9 @np 1 
+@np_mn:
+@nn:
+@ret:
+%cmp2 6 = @positive 10 @np_mn 13 
+%a 7 = @positive 12 @np_mn 14 
+%n 8 = @positive 11 @np_mn 1 
+
+--- Correct: size 185 ---
+@start:
+@np:
+@positive:
+%cmp2 10 = @nn -1 @np 13 
+%n 11 = @nn 9 @np 1 
+@np_mn:
+@nn:
+@ret:
+%cmp2 6 = @positive 10 @np_mn 13 
+%a 7 = @positive 12 @np_mn 14 
+%n 8 = @positive 11 @np_mn 1 

@@ -1,0 +1,16 @@
+function w $test() {
+@start
+        %x =w copy 0
+	jnz 1, @left, @end
+@left
+        %x =w copy 3
+        jnz 2, @dead, @undead
+@dead
+        %y =w copy 3
+        jmp @end
+@undead
+        %y =w copy 33
+        jmp @end
+@end
+	ret %x
+}

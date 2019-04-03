@@ -1,0 +1,8 @@
+--- Correct: size 97 ---
+@start:
+@block1:
+@block2:
+@block3:
+%x 6 = @block2 8 @block1 9 
+@end:
+%x 5 = @block3 7 @block1 9

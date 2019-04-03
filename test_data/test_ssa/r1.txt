@@ -1,0 +1,11 @@
+--- Output: size 46 ---
+@start:
+@loop:
+%x 2 = @start 1 @loop 3 
+@end:
+
+--- Correct: size 46 ---
+@start:
+@loop:
+%x 5 = @start 4 @loop 6 
+@end:

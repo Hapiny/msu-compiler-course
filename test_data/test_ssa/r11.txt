@@ -1,0 +1,6 @@
+--- Correct: size 75 ---
+@start:
+@loop:
+%cond 3 = @start -1 @loop 6 
+%x 4 = @start 2 @loop 5 
+@end:

@@ -1,0 +1,19 @@
+--- Output: size 123 ---
+@start:
+@block1:
+%x 6 = @start 1 @block3 3 
+@block2:
+%x 4 = @block3 3 @block1 7 
+@block3:
+%x 2 = @start 1 @block2 5 
+@end:
+
+--- Correct: size 124 ---
+@start:
+@block1:
+%x 9 = @start 4 @block3 6 
+@block2:
+%x 7 = @block3 6 @block1 10 
+@block3:
+%x 5 = @start 4 @block2 8 
+@end:

@@ -1,0 +1,17 @@
+function w $baz(l %p) {
+@start
+      %x =w loadw %p
+      %w =w mul %x, %x
+      %c =w ceqw %w, %x
+      jnz %c, @ret, @stor
+
+@stor
+      storew %w, %p
+      %z =w copy %w
+      jmp @ret
+
+@ret
+      %z =w loadw %p
+      %z =w add %z, %x
+      ret %p
+}

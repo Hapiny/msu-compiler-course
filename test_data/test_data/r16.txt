@@ -1,0 +1,18 @@
+@start
+ def = %a %b %cmp1 %m %n 
+ use = 
+@nn
+ def = %n 
+ use = %b %n 
+@np
+ def = %cmp2 
+ use = %m 
+@np_mn
+ def = %a 
+ use = %a %b 
+@positive
+ def = %a 
+ use = %a 
+@ret
+ def = 
+ use = %a

@@ -1,0 +1,11 @@
+@start:
+@np:
+@positive:
+%cmp2 10 = @nn -1 @np 13 
+%n 11 = @nn 9 @np 1 
+@np_mn:
+@nn:
+@ret:
+%cmp2 6 = @positive 10 @np_mn 13 
+%a 7 = @positive 12 @np_mn 14 
+%n 8 = @positive 11 @np_mn 1 

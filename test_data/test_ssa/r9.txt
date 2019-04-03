@@ -1,0 +1,7 @@
+@start:
+@block1:
+@block2:
+@end:
+%y 6 = @start 5 @block1 12 @block2 13 
+%t 7 = @start 3 @block1 11 @block2 11 
+%p 8 = @start 2 @block1 10 @block2 10 

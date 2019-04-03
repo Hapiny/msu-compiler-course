@@ -1,0 +1,11 @@
+export function w $main(l %fmt) {
+@start
+  %p =l alloc4 4
+  %t =w call $scanf(l %fmt, l %p)
+  %x =w loadw %p
+  jnz %x, @block1, @block2
+@block1
+  %t =w copy 0
+@block2
+  ret %x
+}
