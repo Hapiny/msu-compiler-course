@@ -1,7 +1,7 @@
 #ifdef __cplusplus
 #define export exports
 extern "C" {
-#include <qbe/all.h>
+#include "../qbe/all.h"
 }
 #undef export
 #else
@@ -14,6 +14,7 @@ extern "C" {
 #include <vector>
 #include <utility>
 #include <set>
+#include <iostream>
 
 
 template<typename UnorderedIn1, typename UnorderedIn2>
@@ -195,6 +196,10 @@ int find_region_for_blk(Blk* blk, std::vector<Region> &regions){
 
 
 void process_loop(int idx, std::vector<Loop> &loops, std::vector<Region> &regions, std::unordered_map<Blk*, int> &blk_map, std::unordered_map<int, int> &loop_map){
+	// for (auto p : loop_map) {
+	// 	std::cout << p.first << " " << std::endl;
+	// }
+	// std::cout << "------------------" << std::endl;
 	Loop &l = loops[idx];
 	for(auto i:l.children)
 		process_loop(i, loops, regions, blk_map, loop_map);
@@ -341,17 +346,29 @@ void find_regions(Fn *fn){
 	auto loops = build_loop_tree(fn);
 	fill_edges(loops);
 
+    // for (Loop l : loops) {
+    //     std::cout << l.head->name << std::endl;
+    //     std::cout << "EDGES" << std::endl;
+    //     for (auto edge : l.edges) {
+    //         std::cout << edge.first->name << " -> " << edge.second->name << std::endl;
+    //     }
+    //     std::cout << "==========" << std::endl;
+    // }
+
 	std::vector<Region> regions;
 	std::unordered_map<Blk*, int> blk_map;
 	std::unordered_map<int, int> loop_map;
 	std::tie(regions, blk_map) = init_regions(fn);
-
+    // for (auto r : blk_map) {
+    //     std::cout << r.first->name << " " << r.second << std::endl;
+    // }
+	// std::cout << "LOOPS SIZE : " << loops.size() << std::endl;
 	for(int idx = 0; idx < loops.size(); idx++){
 		if(loops[idx].parent >= 0)
 			continue;
 		process_loop(idx, loops, regions, blk_map, loop_map);
 	}
-
+	// std::cout << "REGION SIZE : " << regions.size() << std::endl;
 	process_final_region(fn->start, regions, loops, blk_map, loop_map);
 	print_regions(regions);
 }
